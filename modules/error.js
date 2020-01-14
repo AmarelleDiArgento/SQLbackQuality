@@ -48,14 +48,25 @@ modeloError.admError = function (error, callback) {
                   detalle: `${error.name}: \n ${error.originalError}`
                 }
             }
-            default:
+
+            case 'EREQUEST':
+              console.log(error.name + ': ', error.code);
               return {
                 respuesta: 'error',
                   error: {
-                    code: 'Desconocido: ' + error.code,
-                    mensaje: error
+                    code: error.code,
+                    mensaje: error.originalError.info.message,
+                    detalle: error
                   }
               }
+              default:
+                return {
+                  respuesta: 'error',
+                    error: {
+                      code: 'Desconocido: ' + error.code,
+                      mensaje: error
+                    }
+                }
   }
 }
 

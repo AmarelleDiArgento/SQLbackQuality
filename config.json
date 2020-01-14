@@ -1,6 +1,10 @@
 {
     "db": {
-        "server": "10.50.1.123\\Mercedes",
+        "server": "10.50.1.123",
+        "options": {
+            "instanceName": "Mercedes"
+        },
+
         "user": "Inventarios",
         "password": "Inventarios2016*",
         "database": "Temporales",
@@ -8,5 +12,10 @@
         "dateStrings": true,
         "multipleStatements": true
 
+    },
+    "pool": {
+        "max": 10,
+        "min": 0,
+        "idleTimeoutMillis": 30000
     }
 }

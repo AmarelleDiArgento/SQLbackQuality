@@ -9,7 +9,6 @@ router.post("/logins", function (req, res, next) {
     id_usuario: req.body.id_usuario,
     nombre_usuario: req.body.nombre_usuario,
     password: req.body.password
-
   };
   login.insData(logData, function (error, data) {
     if (error) {
@@ -26,10 +25,10 @@ router.post("/logins", function (req, res, next) {
 //update data login
 router.post("/logupd", function (req, res, next) {
   var logData = {
-    id_login: req.body.id_login,
     id_usuario: req.body.id_usuario,
     nombre_usuario: req.body.nombre_usuario,
-    password: req.body.password
+    password: req.body.password,
+    id_login: req.body.id_login
 
   };
   login.updData(logData, function (error, data) {
@@ -62,6 +61,22 @@ router.post("/login", function (req, res, next) {
   });
 });
 
+//get one login
+router.post("/logdel", function (req, res, next) {
+  var logData = {
+    id_login: req.body.id_login
+  };
+  login.delData(logData, function (error, data) {
+    if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
 //get one login
 router.post("/logone", function (req, res, next) {
   var logData = {
