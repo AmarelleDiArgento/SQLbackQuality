@@ -8,7 +8,7 @@ const fs = require("fs");
 
 var index = require('./routes/index');
 var user = require('./routes/users');
-var desplegable = require('./routes/desplegable');
+var login = require('./routes/login');
 
 
 // At the top of your server.js
@@ -64,11 +64,12 @@ app.disable("etag");
 app.use("/", index);
 
 //urls user
-app.post("/credesplegable", desplegable);
-app.post("/upddesplegable", desplegable);
-app.post("/deldesplegable", desplegable);
-app.post("/desplegable", desplegable);
-app.get("/desplegables", desplegable);
+app.post("/logins", login);
+app.post("/logupd", login);
+app.post("/logdel", login);
+app.post("/login", login);
+app.post("/logone", login);
+app.get("/logall", login);
 
 
 
