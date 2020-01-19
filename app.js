@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 const fs = require("fs");
+const cors = require('cors');
 
 var index = require('./routes/index');
 var user = require('./routes/users');
@@ -28,12 +29,15 @@ app.use(
 );
 
 //access cors
+
+app.use(cors());
+
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+  // res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
   res.setHeader("charset", "utf-8");
-  res.setHeader("Access-Control-Allow-Credentials", true);
+  // res.setHeader("Access-Control-Allow-Credentials", true);
   next();
 });
 
