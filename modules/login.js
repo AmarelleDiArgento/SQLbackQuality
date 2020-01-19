@@ -1,7 +1,7 @@
 var sql = require('mssql')
 var config = require("../config");
 
-var e = require("./error")
+var e = require("../utils/utils")
 var modLogin = {};
 
 
@@ -15,7 +15,7 @@ pool.on('error', err => {
 
 let ins = (logdata) => {
   return `INSERT INTO [dbo].[login] ([id_usuario] ,[nombre_usuario] ,[password])
-  VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.password}');`
+  VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.id_usuario}');`
 };
 let upd = (logdata) => {
   return `UPDATE [dbo].[login]
@@ -46,25 +46,11 @@ modLogin.insData = function (logdata, callback) {
   request.query(ins(logdata),
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        console.log(rows);
-        
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqNoReturn(rows))
       }
     })
 };
@@ -76,23 +62,11 @@ modLogin.updData = function (logdata, callback) {
   request.query(upd(logdata),
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqNoReturn(rows))
       }
     })
 
@@ -105,24 +79,11 @@ modLogin.delData = function (logdata, callback) {
   request.query(del(logdata),
     function (error, rows) {
       if (error) {
-
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqNoReturn(rows))
       }
     })
 };
@@ -130,27 +91,16 @@ modLogin.delData = function (logdata, callback) {
 modLogin.idData = function (logdata, callback) {
 
   poolConnect;
+  console.log('Data en modulo', logdata)
   var request = new sql.Request(pool)
   request.query(one(logdata),
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
       }
     })
 };
@@ -165,19 +115,12 @@ modLogin.logData = function (logdata, callback) {
         // Manejo de error en el middleware Error
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
+        if (error) {
+          // Manejo de error en el middleware utils
+          callback(null, e.admError(error));
         } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
+          // Empaquetado de resultados en el middleware utils
+          callback(null, e.paqReturn(rows))
         }
       }
     })
@@ -189,23 +132,11 @@ modLogin.allData = function (logdata, callback) {
   request.query(all,
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
       }
     });
 };

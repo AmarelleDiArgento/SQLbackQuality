@@ -22,14 +22,17 @@ router.post("/logins", function (req, res, next) {
   });
 });
 
-//update data login
-router.post("/logupd", function (req, res, next) {
-  var logData = {
-    id_usuario: req.body.id_usuario,
-    nombre_usuario: req.body.nombre_usuario,
-    password: req.body.password,
-    id_login: req.body.id_login
 
+router.put("/logupd/:id", function (req, res, next) {
+  console.log('REQUEST: \n', req.params);
+  console.log('BODY AQUI: \n', req.body);
+
+  console.log(`  -----------------------------------------------------------------------------------------------------------------------------`)
+  console.log(req);
+  console.log(`  -----------------------------------------------------------------------------------------------------------------------------`)
+
+  var logData = {
+    ...req.body
   };
   login.updData(logData, function (error, data) {
     if (error) {
@@ -62,9 +65,9 @@ router.post("/login", function (req, res, next) {
 });
 
 //get one login
-router.post("/logdel", function (req, res, next) {
+router.post("/logdel/:id", function (req, res, next) {
   var logData = {
-    id_login: req.body.id_login
+    id_login: req.param.id
   };
   login.delData(logData, function (error, data) {
     if (error) {
@@ -77,10 +80,11 @@ router.post("/logdel", function (req, res, next) {
     }
   });
 });
+
 //get one login
-router.post("/logone", function (req, res, next) {
+router.post("/logone/:id", function (req, res, next) {
   var logData = {
-    id_login: req.body.id_login
+    id_login: req.params.id
   };
   login.idData(logData, function (error, data) {
     if (error) {
