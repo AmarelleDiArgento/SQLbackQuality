@@ -5,14 +5,12 @@ var login = require("../modules/login");
 
 //insert data login
 router.post("/logins", function (req, res, next) {
-  var logData = {
-    id_usuario: req.body.id_usuario,
-    nombre_usuario: req.body.nombre_usuario,
-    password: req.body.password
-  };
+
+  var proData = req.body
+  // console.log(proData);
+
   login.insData(logData, function (error, data) {
     if (error) {
-
       res.status(504).jsonp({
         error: error
       });
@@ -22,21 +20,14 @@ router.post("/logins", function (req, res, next) {
   });
 });
 
-
+//update data login
 router.put("/logupd/:id", function (req, res, next) {
-  console.log('REQUEST: \n', req.params);
-  console.log('BODY AQUI: \n', req.body);
-
-  console.log(`  -----------------------------------------------------------------------------------------------------------------------------`)
-  console.log(req);
-  console.log(`  -----------------------------------------------------------------------------------------------------------------------------`)
 
   var logData = {
     ...req.body
   };
   login.updData(logData, function (error, data) {
     if (error) {
-
       res.status(504).jsonp({
         error: error
       });
@@ -65,10 +56,12 @@ router.post("/login", function (req, res, next) {
 });
 
 //get one login
-router.post("/logdel/:id", function (req, res, next) {
+router.delete("/logdel/:id", function (req, res, next) {
   var logData = {
-    id_login: req.param.id
+    id_login: req.params.id
   };
+  // console.log(req.params);
+
   login.delData(logData, function (error, data) {
     if (error) {
 

@@ -1,13 +1,13 @@
 {
     "db": {
-        "server": "10.50.1.123",
+        "server": "localhost",
         "options": {
             "instanceName": "Mercedes"
         },
 
         "user": "Inventarios",
         "password": "Inventarios2016*",
-        "database": "Temporales",
+        "database": "Formularios",
         "connectionLimit": 200,
         "dateStrings": true,
         "multipleStatements": true

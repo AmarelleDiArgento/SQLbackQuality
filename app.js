@@ -10,6 +10,8 @@ const cors = require('cors');
 var index = require('./routes/index');
 var user = require('./routes/users');
 var login = require('./routes/login');
+var proceso = require('./routes/proceso');
+var grafica = require('./routes/grafica');
 
 
 // At the top of your server.js
@@ -64,10 +66,25 @@ app.use("/", index);
 //urls user
 app.post("/logins", login);
 app.put("/logupd/:id", login);
-app.post("/logdel/:id", login);
+app.delete("/logdel/:id", login);
 app.post("/login", login);
 app.post("/logone/:id", login);
 app.get("/logall", login);
+
+//urls procesos
+app.post("/proins", proceso);
+app.put("/proupd/:id", proceso);
+app.delete("/prodel/:id", proceso);
+app.post("/proone/:id", proceso);
+app.get("/proall", proceso);
+
+
+//urls grafica
+// app.post("/proins", proceso);
+// app.put("/proupd/:id", proceso);
+// app.delete("/prodel/:id", proceso);
+// app.post("/proone/:id", proceso);
+app.get("/graall", grafica);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -15,14 +15,14 @@ pool.on('error', err => {
 
 let ins = (data) => {
   let insert = `
-  INSERT INTO [Temporales].[dbo].[Procesos] ([codigo_proceso], [nombre_proceso], [Personalizado1], [Personalizado1_Valor])
+  INSERT INTO [Formularios].[dbo].[Procesos] ([codigo_proceso], [nombre_proceso], [Personalizado1], [Personalizado2], [Personalizado3], [Personalizado4], [Personalizado5], [Personalizado1_Valor])
   VALUES `
   for (let i = 0; i < data.length; i++) {
     const d = data[i];
-    insert += `(${d.codigo_proceso}, '${d.nombre_proceso}', '${d.Personalizado1}', '${d.Personalizado2}')`
+    insert += `(${d.codigo_proceso}, '${d.nombre_proceso}', '${d.Personalizado1}', '${d.Personalizado2}', '${d.Personalizado3}', '${d.Personalizado4}', '${d.Personalizado5}', '${d.Personalizado1_Valor}')`
     insert += ((i + 1) < data.length) ? ',' : ';';
   }
-  console.log(insert);
+  // console.log(insert);
 
   return insert
 };
@@ -32,25 +32,39 @@ let upd = (d) => {
   SET    [codigo_proceso] = ${d.codigo_proceso},
         ,[nombre_proceso] = '${d.nombre_proceso}',
         ,[Personalizado1] = '${d.Personalizado1}',
+        ,[Personalizado2] = '${d.Personalizado2}',
+        ,[Personalizado3] = '${d.Personalizado3}',
+        ,[Personalizado4] = '${d.Personalizado4}',
+        ,[Personalizado5] = '${d.Personalizado5}',
         ,[Personalizado1_Valor] = '${d.Personalizado2}',
   WHERE [id_Proceso] = ${d.id_Proceso};`;
 }
 let del = (d) => {
   return `
-  DELETE FROM [Temporales].[dbo].[Procesos]
+  DELETE FROM [Formularios].[dbo].[Procesos]
   WHERE [id_Proceso] = ${d.id_Proceso};
         `;
 }
 let one = (d) => {
   return `
-  SELECT [id_Proceso], [codigo_proceso], [nombre_proceso], [Personalizado1], [Personalizado1_Valor]
+  SELECT 
+  [id_Proceso], 
+  [codigo_proceso], 
+  [nombre_proceso], 
+  [Personalizado1], 
+  [Personalizado2], 
+  [Personalizado3], 
+  [Personalizado4], 
+  [Personalizado5],
+  [Personalizado1_Valor]
   FROM [dbo].[Procesos]
   WHERE [id_Proceso] = ${d.id_Proceso};`;
 }
 
 let all = ` 
-  SELECT [id_Proceso], [codigo_proceso], [nombre_proceso], [Personalizado1], [Personalizado1_Valor]
+  SELECT [id_Proceso] ,[codigo_proceso] ,[nombre_proceso] ,[Personalizado1] ,[Personalizado2] ,[Personalizado3] ,[Personalizado4] ,[Personalizado5] ,[Personalizado1_Valor]
   FROM [dbo].[Procesos];`;
+
 
 modProceso.insData = function (prodata, callback) {
 
@@ -59,25 +73,11 @@ modProceso.insData = function (prodata, callback) {
   request.query(ins(prodata),
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        console.log(rows);
-
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqNoReturn('creado', rows))
       }
     })
 };
@@ -89,23 +89,11 @@ modProceso.updData = function (prodata, callback) {
   request.query(upd(prodata),
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqNoReturn('actualizado', rows))
       }
     })
 
@@ -118,24 +106,11 @@ modProceso.delData = function (prodata, callback) {
   request.query(del(prodata),
     function (error, rows) {
       if (error) {
-
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqNoReturn('eliminado', rows))
       }
     })
 };
@@ -143,32 +118,21 @@ modProceso.delData = function (prodata, callback) {
 modProceso.idData = function (prodata, callback) {
 
   poolConnect;
+  // console.log('Data en modulo', prodata)
   var request = new sql.Request(pool)
   request.query(one(prodata),
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
       }
     })
 };
 
-modProceso.proData = function (prodata, callback) {
+modProceso.prodata = function (prodata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
@@ -178,19 +142,12 @@ modProceso.proData = function (prodata, callback) {
         // Manejo de error en el middleware Error
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
+        if (error) {
+          // Manejo de error en el middleware utils
+          callback(null, e.admError(error));
         } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
+          // Empaquetado de resultados en el middleware utils
+          callback(null, e.paqReturn(rows))
         }
       }
     })
@@ -202,26 +159,15 @@ modProceso.allData = function (prodata, callback) {
   request.query(all,
     function (error, rows) {
       if (error) {
-        // Manejo de error en el middleware Error
+        // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
-        if (rows.length != 0) {
-          var jsonObj = {
-            respuesta: 'success',
-            rows: rows.recordsets,
-            output: rows.output,
-            rowsAffected: rows.rowsAffected
-          };
-          callback(null, jsonObj);
-        } else {
-          callback(null, {
-            respuesta: 'noData',
-            mensaje: 'La consulta no arroja datos.'
-          });
-        }
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
       }
     });
 };
 
-// pool.close()
+
+
 module.exports = modProceso;

@@ -10,7 +10,7 @@ const pool = new sql.ConnectionPool(config.db);
 const poolConnect = pool.connect();
 
 pool.on('error', err => {
-  (error) ? e.admError(err): console.log("...Conectado...");
+  (error) ? e.admError(err):  console.log("...Conectado...");
 })
 
 let ins = (logdata) => {
@@ -28,16 +28,16 @@ let del = (logdata) => {
 }
 let one = (logdata) => {
   return `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
-            FROM [Temporales].[dbo].[login]
+            FROM [Formularios].[dbo].[login]
             WHERE id_login = ${logdata.id_login};`;
 }
 let log = (logdata) => {
   return `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
-            FROM [Temporales].[dbo].[login]
+            FROM [Formularios].[dbo].[login]
             WHERE [id_usuario] = ${logdata.id_usuario} AND [password] = '${logdata.password}';`;
 }
 let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
-            FROM [Temporales].[dbo].[login]`;
+            FROM [Formularios].[dbo].[login]`;
 
 modLogin.insData = function (logdata, callback) {
 
@@ -50,7 +50,7 @@ modLogin.insData = function (logdata, callback) {
         callback(null, e.admError(error));
       } else {
         // Empaquetado de resultados en el middleware utils
-        callback(null, e.paqNoReturn(rows))
+        callback(null, e.paqNoReturn('creado', rows))
       }
     })
 };
@@ -66,7 +66,7 @@ modLogin.updData = function (logdata, callback) {
         callback(null, e.admError(error));
       } else {
         // Empaquetado de resultados en el middleware utils
-        callback(null, e.paqNoReturn(rows))
+        callback(null, e.paqNoReturn('actualizado', rows))
       }
     })
 
@@ -83,7 +83,7 @@ modLogin.delData = function (logdata, callback) {
         callback(null, e.admError(error));
       } else {
         // Empaquetado de resultados en el middleware utils
-        callback(null, e.paqNoReturn(rows))
+        callback(null, e.paqNoReturn('eliminado', rows))
       }
     })
 };
@@ -91,7 +91,7 @@ modLogin.delData = function (logdata, callback) {
 modLogin.idData = function (logdata, callback) {
 
   poolConnect;
-  console.log('Data en modulo', logdata)
+  // console.log('Data en modulo', logdata)
   var request = new sql.Request(pool)
   request.query(one(logdata),
     function (error, rows) {

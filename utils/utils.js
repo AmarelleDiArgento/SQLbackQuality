@@ -11,7 +11,7 @@ modeloUtils.admError = function (error, callback) {
 
   switch (error.code) {
     case 'EINSTLOOKUP':
-      console.log(error.name + ': ', error.code);
+      // console.log(error.name + ': ', error.code);
       return {
 
         respuesta: 'error',
@@ -26,7 +26,7 @@ modeloUtils.admError = function (error, callback) {
       }
 
       case 'ECONNCLOSED':
-        console.log(error.name + ': ', error.code);
+        // console.log(error.name + ': ', error.code);
         return {
 
           respuesta: 'error',
@@ -66,7 +66,7 @@ modeloUtils.admError = function (error, callback) {
             }
 
             case 'EREQUEST':
-              console.log(error.name + ': ', error.code);
+              // console.log(error.name + ': ', error.code);
               return {
 
                 respuesta: 'error',
@@ -94,7 +94,7 @@ modeloUtils.admError = function (error, callback) {
 }
 modeloUtils.paqReturn = function (rows, rollback) {
 
-  console.log(rows);
+  // console.log(rows);
 
   if (rows.recordset.length != 0) {
     return {
@@ -118,15 +118,19 @@ modeloUtils.paqReturn = function (rows, rollback) {
   }
 }
 
-modeloUtils.paqNoReturn = function (rows, rollback) {
+modeloUtils.paqNoReturn = function (accion, rows) {
 
-  console.log(rows);
+  // console.log(rows);
 
   if (rows.rowsAffected != 0) {
     return {
       respuesta: 'success',
       rows: [],
-      output: rows.output,
+      output: {
+        code: 0,
+        mensaje: 'Registro ' + accion,
+        detalle: ''
+      },
       rowsAffected: rows.rowsAffected
     }
   } else {
