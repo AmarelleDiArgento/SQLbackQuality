@@ -1,6 +1,6 @@
 {
     "db": {
-        "server": "localhost",
+        "server": "10.50.1.123",
         "options": {
             "instanceName": "Mercedes"
         },

@@ -2,7 +2,7 @@ var sql = require('mssql')
 var config = require("../config");
 
 var e = require("../utils/utils")
-var modDesplegable = {};
+var modDatosCal = {};
 
 
 // async/await style:
@@ -10,41 +10,48 @@ const pool = new sql.ConnectionPool(config.db);
 const poolConnect = pool.connect();
 
 pool.on('error', err => {
-  (error) ? e.admError(err): console.log("...Conectado...");
+  (error) ? e.admError(err):  console.log("...Conectado...");
 })
 
-let ins = (desdata) => {
-  return `
-          INSERT INTO [dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
-          VALUES('${desdata.Filtro}', '${desdata.Codigo}', '${Opcion}');`
+let ins = (Dcpdata) => {
+  return `INSERT INTO [dbo].[Datos_Calidad_Pos] ([id_proceso] ,[fecha] ,[Dato1] ,
+  [Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,[Dato7] ,[Dato8] ,[Dato9])
+  VALUES(${Dcpdata.id_proceso},'${Dcpdata.fecha}','${Dcpdata.Dato1}',
+  '${Dcpdata.Dato2}','${Dcpdata.Dato3}','${Dcpdata.Dato4}','${Dcpdata.Dato5}',
+  '${Dcpdata.Dato6}','${Dcpdata.Dato7}','${Dcpdata.Dato8}','${Dcpdata.Dato9}');`
 };
-let upd = (desdata) => {
-  return `UPDATE [dbo].[Desplegables]
-          SET [Filtro] = '${desdata.Codigo}', [Opcion] = '${desdata.Opcion}'
-          WHERE [id_Deplegable] = ${desdata.id_Desplegable};`;
+let upd = (Dcpdata) => {
+  return `UPDATE [dbo].[Datos_Calidad_Pos]
+  SET [id_proceso] = ${Dcpdata.id_proceso}, [fecha] = '${Dcpdata.fecha}', [Dato1] = '${Dcpdata.Dato1}', [Dato2] = '${Dcpdata.Dato2}', 
+  [Dato3] = '${Dcpdata.Dato3}', [Dato4] = '${Dcpdata.Dato4}', [Dato5] = '${Dcpdata.Dato5}', [Dato6] = '${Dcpdata.Dato6}', 
+  [Dato7] = '${Dcpdata.Dato7}', [Dato8] = '${Dcpdata.Dato8}', [Dato9] = '${Dcpdata.Dato9}'
+  WHERE [id_Datos] = ${Dcpdata.id_Datos};`;
 }
-let del = (desdata) => {
-  return `DELETE FROM [dbo].[Desplegables]
-          WHERE [id_Desplegable] = ${desdata.id_Desplegable};`;
+let del = (Dcpdata) => {
+  return `DELETE FROM [dbo].[Datos_Calidad_Pos]
+  WHERE [id_Datos] = ${Dcpdata.id_Datos};`;
 }
-let one = (desdata) => {
-  return `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
-          FROM [Formularios].[dbo].[Desplegable]
-          WHERE id_Desplegable = ${desdata.id_Desplegable};`;
+let one = (Dcpdata) => {
+  return `SELECT [id_Datos] ,[id_proceso] ,[fecha] ,[Dato1] ,[Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,
+  [Dato7] ,[Dato8] ,[Dato9]
+  FROM [Formularios].[dbo].[Datos_Calidad_Pos]
+  WHERE id_Datos = ${Dcpdata.id_Datos};`;
 }
-let log = (desdata) => {
-  return `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
-          FROM [Formularios].[dbo].[Desplegable]
-          WHERE [Filtro] = ${desdata.Filtro} AND [Codigo] = '${desdata.Codigo}';`;
+let log = (Dcpdata) => {
+  return `SELECT [id_Datos] ,[id_proceso] ,[fecha] ,[Dato1] ,[Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,
+  [Dato7] ,[Dato8] ,[Dato9]
+  FROM [Formularios].[dbo].[Datos_Calidad_Pos]
+  WHERE [id_proceso] = ${Dcpdata.id_proceso} AND [fecha] = '${Dcpdata.fecha}';`;
 }
-let all = `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
-          FROM [Formularios].[dbo].[Desplegables]`;
+let all = `SELECT [id_Datos] ,[id_proceso] ,[fecha] ,[Dato1] ,[Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,
+  [Dato7] ,[Dato8] ,[Dato9]
+  FROM [Formularios].[dbo].[Datos_Calidad_Pos]`;
 
-modDesplegable.insData = function (desdata, callback) {
+  modDatosCal.insData = function (Dcpdata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(ins(desdata),
+  request.query(ins(Dcpdata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -56,11 +63,11 @@ modDesplegable.insData = function (desdata, callback) {
     })
 };
 
-modDesplegable.updData = function (desdata, callback) {
+modDatosCal.updData = function (Dcpdata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(upd(desdata),
+  request.query(upd(Dcpdata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -73,11 +80,11 @@ modDesplegable.updData = function (desdata, callback) {
 
 };
 
-modDesplegable.delData = function (desdata, callback) {
+modDatosCal.delData = function (Dcpdata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(del(desdata),
+  request.query(del(Dcpdata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -89,12 +96,12 @@ modDesplegable.delData = function (desdata, callback) {
     })
 };
 
-modDesplegable.idData = function (desdata, callback) {
+modDatosCal.idData = function (Dcpdata, callback) {
 
   poolConnect;
-  // console.log('Data en modulo', desdata)
+  // console.log('Data en modulo', Dcpdata)
   var request = new sql.Request(pool)
-  request.query(one(desdata),
+  request.query(one(Dcpdata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -106,11 +113,11 @@ modDesplegable.idData = function (desdata, callback) {
     })
 };
 
-modDesplegable.desdata = function (desdata, callback) {
+modDatosCal.Dcpdata = function (Dcpdata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(log(desdata),
+  request.query(log(Dcpdata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware Error
@@ -127,7 +134,7 @@ modDesplegable.desdata = function (desdata, callback) {
     })
 };
 
-modDesplegable.allData = function (desdata, callback) {
+modDatosCal.allData = function (Dcpdata, callback) {
   poolConnect;
   var request = new sql.Request(pool)
   request.query(all,
@@ -143,4 +150,4 @@ modDesplegable.allData = function (desdata, callback) {
 };
 
 // pool.close()
-module.exports = modDesplegable;
+module.exports = modDatosCal;

@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-var login = require("../modules/desplegable");
+var desplegable = require("../modules/desplegable");
 
 //insert data login
 router.post("/desins", function (req, res, next) {
@@ -9,7 +9,7 @@ router.post("/desins", function (req, res, next) {
   var proData = req.body
   // console.log(proData);
 
-  login.insData(logData, function (error, data) {
+  desplegable.insData(desdata, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error
@@ -23,10 +23,10 @@ router.post("/desins", function (req, res, next) {
 //update data login
 router.put("/desupd/:id", function (req, res, next) {
 
-  var logData = {
+  var desdata = {
     ...req.body
   };
-  login.updData(logData, function (error, data) {
+  desplegable.updData(desdata, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error
@@ -40,12 +40,12 @@ router.put("/desupd/:id", function (req, res, next) {
 
 //get one login
 router.delete("/desdel/:id", function (req, res, next) {
-  var logData = {
-    id_login: req.params.id
+  var desdata = {
+    id_Desplegable: req.params.id
   };
   // console.log(req.params);
 
-  login.delData(logData, function (error, data) {
+  desplegable.delData(desdata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
@@ -59,10 +59,10 @@ router.delete("/desdel/:id", function (req, res, next) {
 
 //get one login
 router.post("/desone/:id", function (req, res, next) {
-  var logData = {
-    id_login: req.params.id
+  var desdata = {
+    id_Desplegable: req.params.id
   };
-  login.idData(logData, function (error, data) {
+    desplegable.idData(desdata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
@@ -76,8 +76,8 @@ router.post("/desone/:id", function (req, res, next) {
 
 //get all login
 router.get("/desall", function (req, res, next) {
-  var logData = {};
-  login.allData(logData, function (error, data) {
+  var desdata = {};
+  desplegable.allData(desdata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
