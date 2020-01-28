@@ -13,6 +13,9 @@ var login = require('./routes/login');
 var proceso = require('./routes/proceso');
 var desplegable = require('./routes/desplegable');
 var Datos_Calidad_Pos = require('./routes/Datos_calidad_pos');
+var datos_procesos_detalle = require('./routes/Datos_procesos_detalle');
+var login_proceso = require('./routes/login_proeceso');
+var Procesos_Detalle = require('./routes/Procesos_Detalle');
 var grafica = require('./routes/grafica');
 
 
@@ -93,6 +96,29 @@ app.put("/Dcpupd/:id", Datos_Calidad_Pos);
 app.delete("/Dcpdel/:id", Datos_Calidad_Pos);
 app.post("/Dcpone/:id", Datos_Calidad_Pos);
 app.get("/Dcpall", Datos_Calidad_Pos);
+
+//urls Datos_procesos_detalle
+app.post("/Dpdins", datos_procesos_detalle);
+app.put("/Dpdupd/:id", datos_procesos_detalle);
+app.delete("/Dpddel/:id", datos_procesos_detalle);
+app.post("/Dpdone/:id", datos_procesos_detalle);
+app.get("/Dpdall", datos_procesos_detalle);
+
+//urls login_proceso
+app.post("/logpins", login_proceso);
+app.put("/logpupd/:id", login_proceso);
+app.delete("/logpdel/:id", login_proceso);
+app.post("/logpone/:id", login_proceso);
+app.get("/logpall", login_proceso);
+
+//urls Procesos_Detalle
+app.post("/Pdins", Procesos_Detalle);
+app.put("/Pdupd/:id", Procesos_Detalle);
+app.delete("/Pddel/:id", Procesos_Detalle);
+app.post("/Pdone/:id", Procesos_Detalle);
+app.get("/Pdall", Procesos_Detalle);
+
+
 
 //urls grafica
 // app.post("/proins", proceso);

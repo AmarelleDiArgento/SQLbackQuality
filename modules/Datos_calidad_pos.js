@@ -15,37 +15,37 @@ pool.on('error', err => {
 
 let ins = (Dcpdata) => {
   return `INSERT INTO [dbo].[Datos_Calidad_Pos] ([id_proceso] ,[fecha] ,[Dato1] ,
-  [Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,[Dato7] ,[Dato8] ,[Dato9])
-  VALUES(${Dcpdata.id_proceso},'${Dcpdata.fecha}','${Dcpdata.Dato1}',
-  '${Dcpdata.Dato2}','${Dcpdata.Dato3}','${Dcpdata.Dato4}','${Dcpdata.Dato5}',
-  '${Dcpdata.Dato6}','${Dcpdata.Dato7}','${Dcpdata.Dato8}','${Dcpdata.Dato9}');`
+          [Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,[Dato7] ,[Dato8] ,[Dato9])
+          VALUES(${Dcpdata.id_proceso},'${Dcpdata.fecha}','${Dcpdata.Dato1}',
+          '${Dcpdata.Dato2}','${Dcpdata.Dato3}','${Dcpdata.Dato4}','${Dcpdata.Dato5}',
+          '${Dcpdata.Dato6}','${Dcpdata.Dato7}','${Dcpdata.Dato8}','${Dcpdata.Dato9}');`
 };
 let upd = (Dcpdata) => {
   return `UPDATE [dbo].[Datos_Calidad_Pos]
-  SET [id_proceso] = ${Dcpdata.id_proceso}, [fecha] = '${Dcpdata.fecha}', [Dato1] = '${Dcpdata.Dato1}', [Dato2] = '${Dcpdata.Dato2}', 
-  [Dato3] = '${Dcpdata.Dato3}', [Dato4] = '${Dcpdata.Dato4}', [Dato5] = '${Dcpdata.Dato5}', [Dato6] = '${Dcpdata.Dato6}', 
-  [Dato7] = '${Dcpdata.Dato7}', [Dato8] = '${Dcpdata.Dato8}', [Dato9] = '${Dcpdata.Dato9}'
-  WHERE [id_Datos] = ${Dcpdata.id_Datos};`;
+          SET [id_proceso] = ${Dcpdata.id_proceso}, [fecha] = '${Dcpdata.fecha}', [Dato1] = '${Dcpdata.Dato1}', [Dato2] = '${Dcpdata.Dato2}', 
+          [Dato3] = '${Dcpdata.Dato3}', [Dato4] = '${Dcpdata.Dato4}', [Dato5] = '${Dcpdata.Dato5}', [Dato6] = '${Dcpdata.Dato6}', 
+          [Dato7] = '${Dcpdata.Dato7}', [Dato8] = '${Dcpdata.Dato8}', [Dato9] = '${Dcpdata.Dato9}'
+          WHERE [id_Datos] = ${Dcpdata.id_Datos};`;
 }
 let del = (Dcpdata) => {
   return `DELETE FROM [dbo].[Datos_Calidad_Pos]
-  WHERE [id_Datos] = ${Dcpdata.id_Datos};`;
+          WHERE [id_Datos] = ${Dcpdata.id_Datos};`;
 }
 let one = (Dcpdata) => {
   return `SELECT [id_Datos] ,[id_proceso] ,[fecha] ,[Dato1] ,[Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,
-  [Dato7] ,[Dato8] ,[Dato9]
-  FROM [Formularios].[dbo].[Datos_Calidad_Pos]
-  WHERE id_Datos = ${Dcpdata.id_Datos};`;
+          [Dato7] ,[Dato8] ,[Dato9]
+          FROM [Formularios].[dbo].[Datos_Calidad_Pos]
+          WHERE id_Datos = ${Dcpdata.id_Datos};`;
 }
 let log = (Dcpdata) => {
   return `SELECT [id_Datos] ,[id_proceso] ,[fecha] ,[Dato1] ,[Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,
-  [Dato7] ,[Dato8] ,[Dato9]
-  FROM [Formularios].[dbo].[Datos_Calidad_Pos]
-  WHERE [id_proceso] = ${Dcpdata.id_proceso} AND [fecha] = '${Dcpdata.fecha}';`;
+          [Dato7] ,[Dato8] ,[Dato9]
+          FROM [Formularios].[dbo].[Datos_Calidad_Pos]
+          WHERE [id_proceso] = ${Dcpdata.id_proceso} AND [fecha] = '${Dcpdata.fecha}';`;
 }
 let all = `SELECT [id_Datos] ,[id_proceso] ,[fecha] ,[Dato1] ,[Dato2] ,[Dato3] ,[Dato4] ,[Dato5] ,[Dato6] ,
-  [Dato7] ,[Dato8] ,[Dato9]
-  FROM [Formularios].[dbo].[Datos_Calidad_Pos]`;
+          [Dato7] ,[Dato8] ,[Dato9]
+          FROM [Formularios].[dbo].[Datos_Calidad_Pos]`;
 
   modDatosCal.insData = function (Dcpdata, callback) {
 

@@ -2,7 +2,7 @@ var sql = require('mssql')
 var config = require("../config");
 
 var e = require("../utils/utils")
-var modLogin = {};
+var modlogin_pro = {};
 
 
 // async/await style:
@@ -13,37 +13,37 @@ pool.on('error', err => {
   (error) ? e.admError(err):  console.log("...Conectado...");
 })
 
-let ins = (logdata) => {
-  return `INSERT INTO [dbo].[login] ([id_usuario] ,[nombre_usuario] ,[password])
-          VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.id_usuario}');`
+let ins = (logprodata) => {
+  return `INSERT INTO [dbo].[login_proceso] ([id_usuario] ,[id_procesos])
+          VALUES(${logprodata.id_usuario},'${logprodata.id_procesos}');`
 };
-let upd = (logdata) => {
-  return `UPDATE [dbo].[login]
-          SET [id_usuario] = ${logdata.id_usuario}, [nombre_usuario] = '${logdata.nombre_usuario}', [password] = '${logdata.password}'
-          WHERE [id_login] = ${logdata.id_login};`;
+let upd = (logprodata) => {
+  return `UPDATE [dbo].[login_proceso]
+          SET [id_usuario] = ${logprodata.id_usuario}, [id_procesos] = '${logprodata.id_procesos}' 
+          WHERE [id_login_proc] = ${logprodata.id_login_proc};`;
 }
-let del = (logdata) => {
-  return `DELETE FROM [dbo].[login]
-          WHERE [id_login] = ${logdata.id_login};`;
+let del = (logprodata) => {
+  return `DELETE FROM [dbo].[login_proceso]
+          WHERE [id_login_proc] = ${logprodata.id_login_proc};`;
 }
-let one = (logdata) => {
-  return `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
-          FROM [Formularios].[dbo].[login]
-          WHERE id_login = ${logdata.id_login};`;
+let one = (logprodata) => {
+  return `SELECT [id_login_proc] ,[id_usuario] ,[id_procesos]
+          FROM [Formularios].[dbo].[login_proceso]
+          WHERE id_login_proc = ${logprodata.id_login_proc};`;
+        }
+let log = (logprodata) => {
+  return `SELECT [id_login_proc] ,[id_usurio] ,[id_procesos]
+          FROM [Formularios].[dbo].[login_proceso]
+          WHERE [id_usuario] = ${logprodata.id_usuario} AND [id_procesos] = '${logprodata.id_procesos}';`;
 }
-let log = (logdata) => {
-  return `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
-          FROM [Formularios].[dbo].[login]
-          WHERE [id_usuario] = ${logdata.id_usuario} AND [password] = '${logdata.password}';`;
-}
-let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
-          FROM [Formularios].[dbo].[login]`;
+let all = `SELECT [id_login_proc] ,[id_usuario] ,[id_procesos]
+          FROM [Formularios].[dbo].[login_proceso]`;
 
-modLogin.insData = function (logdata, callback) {
+  modlogin_pro.insData = function (logprodata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(ins(logdata),
+  request.query(ins(logprodata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -55,11 +55,11 @@ modLogin.insData = function (logdata, callback) {
     })
 };
 
-modLogin.updData = function (logdata, callback) {
+modlogin_pro.updData = function (logprodata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(upd(logdata),
+  request.query(upd(logprodata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -72,11 +72,11 @@ modLogin.updData = function (logdata, callback) {
 
 };
 
-modLogin.delData = function (logdata, callback) {
+modlogin_pro.delData = function (logprodata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(del(logdata),
+  request.query(del(logprodata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -88,12 +88,12 @@ modLogin.delData = function (logdata, callback) {
     })
 };
 
-modLogin.idData = function (logdata, callback) {
+modlogin_pro.idData = function (logprodata, callback) {
 
   poolConnect;
-  // console.log('Data en modulo', logdata)
+  // console.log('Data en modulo', logprodata)
   var request = new sql.Request(pool)
-  request.query(one(logdata),
+  request.query(one(logprodata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils
@@ -105,11 +105,11 @@ modLogin.idData = function (logdata, callback) {
     })
 };
 
-modLogin.logData = function (logdata, callback) {
+modlogin_pro.logprodata = function (logprodata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
-  request.query(log(logdata),
+  request.query(log(logprodata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware Error
@@ -126,7 +126,7 @@ modLogin.logData = function (logdata, callback) {
     })
 };
 
-modLogin.allData = function (logdata, callback) {
+modlogin_pro.allData = function (logprodata, callback) {
   poolConnect;
   var request = new sql.Request(pool)
   request.query(all,
@@ -142,4 +142,4 @@ modLogin.allData = function (logdata, callback) {
 };
 
 // pool.close()
-module.exports = modLogin;
+module.exports = modlogin_pro;
