@@ -7,7 +7,6 @@ var desplegable = require("../modules/desplegable");
 router.post("/desins", function (req, res, next) {
 
   var desdata = req.body
-  // console.log(proData);
 
   desplegable.insData(desdata, function (error, data) {
     if (error) {

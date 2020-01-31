@@ -8,12 +8,9 @@ const fs = require("fs");
 const cors = require('cors');
 
 var index = require('./routes/index');
-var user = require('./routes/users');
 var login = require('./routes/login');
 var proceso = require('./routes/proceso');
 var desplegable = require('./routes/desplegable');
-var login_proceso = require('./routes/login_proceso');
-var Procesos_Detalle = require('./routes/Procesos_Detalle');
 var grafica = require('./routes/grafica');
 
 
@@ -88,21 +85,6 @@ app.delete("/desdel/:id", desplegable);
 app.post("/desone/:id", desplegable);
 app.post("/desfil/:Filtro", desplegable);
 app.get("/desall", desplegable);
-
-//urls login_proceso
-app.post("/logpins", login_proceso);
-app.put("/logpupd/:id", login_proceso);
-app.delete("/logpdel/:id", login_proceso);
-app.post("/logpone/:id", login_proceso);
-app.get("/logpall", login_proceso);
-
-//urls Procesos_Detalle
-app.post("/Pdins", Procesos_Detalle);
-app.put("/Pdupd/:id", Procesos_Detalle);
-app.delete("/Pddel/:id", Procesos_Detalle);
-app.post("/Pdone/:id", Procesos_Detalle);
-app.get("/Pdall", Procesos_Detalle);
-
 
 
 //urls grafica
