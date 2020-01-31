@@ -6,8 +6,7 @@ var desplegable = require("../modules/desplegable");
 //insert data login
 router.post("/desins", function (req, res, next) {
 
-  var proData = req.body
-  // console.log(proData);
+  var desdata = req.body
 
   desplegable.insData(desdata, function (error, data) {
     if (error) {

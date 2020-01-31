@@ -62,7 +62,7 @@ let Items = (area, postcosecha, proceso, capitulo, short) => {
 let all = `
   SELECT fecha, Postcosecha, Area, nombre_proceso, Capitulo, Short_Item, item, Total_Si, Total_No
     FROM Formularios.dbo.Vista_Postco
-    WHERE fecha between '2020-01-23 00:00:00' and '2020-01-23 23:59:59'
+    WHERE fecha between '2020-01-31 00:00:00' and '2020-02-01 23:59:59'
     ORDER BY Postcosecha, nombre_proceso;
 `;
 

@@ -15,8 +15,8 @@ pool.on('error', err => {
 
 let ins = (desdata) => {
   return `
-          INSERT INTO [dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
-          VALUES('${desdata.Filtro}', '${desdata.Codigo}', '${Opcion}');`
+          INSERT INTO [Formularios].[dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
+          VALUES('${desdata.Filtro}', '${desdata.Codigo}', '${desdata.Opcion}');`
 };
 let upd = (desdata) => {
   return `UPDATE [dbo].[Desplegables]
