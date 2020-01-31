@@ -1,15 +1,15 @@
 var express = require("express");
 var router = express.Router();
 
-var Datos_procesos_detalle = require("../modules/Datos_procesos_detalle");
+var login_proceso = require("../modules/login_proceso");
 
-//insert data Datos_procesos_detalle
-router.post("/Dpdins", function (req, res, next) {
+//insert data login_proceso
+router.post("/logpins", function (req, res, next) {
 
-  var proData = req.body
+  var logprodata = req.body
   // console.log(proData);
 
-  Datos_procesos_detalle.insData(Dpddata, function (error, data) {
+  login_proceso.insData(logprodata, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error
@@ -20,13 +20,13 @@ router.post("/Dpdins", function (req, res, next) {
   });
 });
 
-//update data Datos_procesos_detalle
-router.put("/Dpdupd/:id", function (req, res, next) {
+//update data login_proceso
+router.put("/logpupd/:id", function (req, res, next) {
 
-  var Dpddata = {
+  var logprodata = {
     ...req.body
   };
-  Datos_procesos_detalle.updData(Dpddata, function (error, data) {
+  login_proceso.updData(logprodata, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error
@@ -37,13 +37,13 @@ router.put("/Dpdupd/:id", function (req, res, next) {
   });
 });
 
-//get Datos_procesos_detalle user
-router.post("/Datos_procesos_detalle", function (req, res, next) {
-  var Dpddata = {
+//get login_proceso user
+router.post("/login_proceso", function (req, res, next) {
+  var logprodata = {
     id_usuario: req.body.id_usuario,
     password: req.body.password
   };
-  Datos_procesos_detalle.Dpddata(Dpddata, function (error, data) {
+  login_proceso.logprodata(logprodata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
@@ -55,14 +55,14 @@ router.post("/Datos_procesos_detalle", function (req, res, next) {
   });
 });
 
-//get one Datos_procesos_detalle
-router.delete("/Dpddel/:id", function (req, res, next) {
-  var Dpddata = {
+//get one login_proceso
+router.delete("/logpdel/:id", function (req, res, next) {
+  var logprodata = {
     id_Datos: req.params.id
   };
   // console.log(req.params);
 
-  Datos_procesos_detalle.delData(Dpddata, function (error, data) {
+  login_proceso.delData(logprodata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
@@ -74,12 +74,12 @@ router.delete("/Dpddel/:id", function (req, res, next) {
   });
 });
 
-//get one Datos_procesos_detalle
-router.post("/Dpdone/:id", function (req, res, next) {
-  var Dpddata = {
+//get one login_proceso
+router.post("/logpone/:id", function (req, res, next) {
+  var logprodata = {
     id_Datos: req.params.id
   };
-  Datos_procesos_detalle.idData(Dpddata, function (error, data) {
+  login_proceso.idData(logprodata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
@@ -91,10 +91,10 @@ router.post("/Dpdone/:id", function (req, res, next) {
   });
 });
 
-//get all Datos_procesos_detalle
-router.get("/Dpdall", function (req, res, next) {
-  var Dpddata = {};
-  Datos_procesos_detalle.allData(Dpddata, function (error, data) {
+//get all login_proceso
+router.get("/logpall", function (req, res, next) {
+  var logprodata = {};
+  login_proceso.allData(logprodata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({

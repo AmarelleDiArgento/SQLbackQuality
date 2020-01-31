@@ -6,7 +6,7 @@ var desplegable = require("../modules/desplegable");
 //insert data login
 router.post("/desins", function (req, res, next) {
 
-  var proData = req.body
+  var desdata = req.body
   // console.log(proData);
 
   desplegable.insData(desdata, function (error, data) {
@@ -73,6 +73,24 @@ router.post("/desone/:id", function (req, res, next) {
     }
   });
 });
+
+//get one login
+router.post("/desfil/:Filtro", function (req, res, next) {
+  var desdata = {
+    Filtro: req.params.Filtro
+  };
+    desplegable.Filtro(desdata, function (error, data) {
+    if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
+
 
 //get all login
 router.get("/desall", function (req, res, next) {

@@ -14,16 +14,16 @@ pool.on('error', err => {
 })
 
 let ins = (logprodata) => {
-  return `INSERT INTO [dbo].[login_proceso] ([id_usuario] ,[id_procesos])
+  return `INSERT INTO [Formularios].[dbo].[login_proceso] ([id_usuario] ,[id_procesos])
           VALUES(${logprodata.id_usuario},'${logprodata.id_procesos}');`
 };
 let upd = (logprodata) => {
-  return `UPDATE [dbo].[login_proceso]
+  return `UPDATE [Formularios].[dbo].[login_proceso]
           SET [id_usuario] = ${logprodata.id_usuario}, [id_procesos] = '${logprodata.id_procesos}' 
           WHERE [id_login_proc] = ${logprodata.id_login_proc};`;
 }
 let del = (logprodata) => {
-  return `DELETE FROM [dbo].[login_proceso]
+  return `DELETE FROM [Formularios].[dbo].[login_proceso]
           WHERE [id_login_proc] = ${logprodata.id_login_proc};`;
 }
 let one = (logprodata) => {

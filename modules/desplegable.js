@@ -15,22 +15,27 @@ pool.on('error', err => {
 
 let ins = (desdata) => {
   return `
-          INSERT INTO [dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
-          VALUES('${desdata.Filtro}', '${desdata.Codigo}', '${Opcion}');`
+          INSERT INTO [Formularios].[dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
+          VALUES('${desdata.Filtro}', '${desdata.Codigo}', '${desdata.Opcion}');`
 };
 let upd = (desdata) => {
-  return `UPDATE [dbo].[Desplegables]
-          SET [Filtro] = '${desdata.Codigo}', [Opcion] = '${desdata.Opcion}'
-          WHERE [id_Deplegable] = ${desdata.id_Desplegable};`;
+  return `UPDATE [Formularios].[dbo].[Desplegables]
+          SET [Filtro] = '${desdata.Filtro}', [Codigo] = '${desdata.Codigo}', [Opcion] = '${desdata.Opcion}'
+          WHERE [id_Desplegable] = ${desdata.id_Desplegable};`;
 }
 let del = (desdata) => {
-  return `DELETE FROM [dbo].[Desplegables]
+  return `DELETE FROM [Formularios].[dbo].[Desplegables]
           WHERE [id_Desplegable] = ${desdata.id_Desplegable};`;
 }
 let one = (desdata) => {
   return `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
-          FROM [Formularios].[dbo].[Desplegable]
+          FROM [Formularios].[dbo].[Desplegables]
           WHERE id_Desplegable = ${desdata.id_Desplegable};`;
+}
+let fil = (desdata) => {
+  return `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
+          FROM [Formularios].[dbo].[Desplegables]
+          WHERE Filtro = ${desdata.Filtro};`;
 }
 let log = (desdata) => {
   return `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
@@ -105,7 +110,22 @@ modDesplegable.idData = function (desdata, callback) {
       }
     })
 };
+modDesplegable.Filtro = function (desdata, callback) {
 
+  poolConnect;
+  // console.log('Data en modulo', desdata)
+  var request = new sql.Request(pool)
+  request.query(fil(desdata),
+    function (error, rows) {
+      if (error) {
+        // Manejo de error en el middleware utils
+        callback(null, e.admError(error));
+      } else {
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
+      }
+    })
+};
 modDesplegable.desdata = function (desdata, callback) {
 
   poolConnect;

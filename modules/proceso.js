@@ -28,7 +28,7 @@ let ins = (data) => {
 };
 let upd = (d) => {
   return `
-  UPDATE [dbo].[Procesos]
+  UPDATE [Formularios].[dbo].[Procesos]
   SET    [codigo_proceso] = ${d.codigo_proceso},
         ,[nombre_proceso] = '${d.nombre_proceso}',
         ,[Personalizado1] = '${d.Personalizado1}',
@@ -63,7 +63,7 @@ let one = (d) => {
 
 let all = ` 
   SELECT [id_Proceso] ,[codigo_proceso] ,[nombre_proceso] ,[Personalizado1] ,[Personalizado2] ,[Personalizado3] ,[Personalizado4] ,[Personalizado5] ,[Personalizado1_Valor]
-  FROM [dbo].[Procesos];`;
+  FROM [Formularios].[dbo].[Procesos];`;
 
 
 modProceso.insData = function (prodata, callback) {

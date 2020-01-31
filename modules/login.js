@@ -14,16 +14,16 @@ pool.on('error', err => {
 })
 
 let ins = (logdata) => {
-  return `INSERT INTO [dbo].[login] ([id_usuario] ,[nombre_usuario] ,[password])
+  return `INSERT INTO [Formularios].[dbo].[login] ([id_usuario] ,[nombre_usuario] ,[password])
           VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.id_usuario}');`
 };
 let upd = (logdata) => {
-  return `UPDATE [dbo].[login]
+  return `UPDATE [Formularios].[dbo].[login]
           SET [id_usuario] = ${logdata.id_usuario}, [nombre_usuario] = '${logdata.nombre_usuario}', [password] = '${logdata.password}'
           WHERE [id_login] = ${logdata.id_login};`;
 }
 let del = (logdata) => {
-  return `DELETE FROM [dbo].[login]
+  return `DELETE FROM [Formularios].[dbo].[login]
           WHERE [id_login] = ${logdata.id_login};`;
 }
 let one = (logdata) => {

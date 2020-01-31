@@ -12,9 +12,7 @@ var user = require('./routes/users');
 var login = require('./routes/login');
 var proceso = require('./routes/proceso');
 var desplegable = require('./routes/desplegable');
-var Datos_Calidad_Pos = require('./routes/Datos_calidad_pos');
-var datos_procesos_detalle = require('./routes/Datos_procesos_detalle');
-var login_proceso = require('./routes/login_proeceso');
+var login_proceso = require('./routes/login_proceso');
 var Procesos_Detalle = require('./routes/Procesos_Detalle');
 var grafica = require('./routes/grafica');
 
@@ -80,7 +78,7 @@ app.get("/logall", login);
 app.post("/proins", proceso);
 app.put("/proupd/:id", proceso);
 app.delete("/prodel/:id", proceso);
-app.post("/proone/:id", proceso);
+app.get("/proone/:id", proceso);
 app.get("/proall", proceso);
 
 //urls desplegables
@@ -88,21 +86,8 @@ app.post("/desins", desplegable);
 app.put("/desupd/:id", desplegable);
 app.delete("/desdel/:id", desplegable);
 app.post("/desone/:id", desplegable);
+app.post("/desfil/:Filtro", desplegable);
 app.get("/desall", desplegable);
-
-//urls Datos_Calidad_Pos
-app.post("/Dcpins", Datos_Calidad_Pos);
-app.put("/Dcpupd/:id", Datos_Calidad_Pos);
-app.delete("/Dcpdel/:id", Datos_Calidad_Pos);
-app.post("/Dcpone/:id", Datos_Calidad_Pos);
-app.get("/Dcpall", Datos_Calidad_Pos);
-
-//urls Datos_procesos_detalle
-app.post("/Dpdins", datos_procesos_detalle);
-app.put("/Dpdupd/:id", datos_procesos_detalle);
-app.delete("/Dpddel/:id", datos_procesos_detalle);
-app.post("/Dpdone/:id", datos_procesos_detalle);
-app.get("/Dpdall", datos_procesos_detalle);
 
 //urls login_proceso
 app.post("/logpins", login_proceso);
@@ -129,7 +114,7 @@ app.get("/graall", grafica);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  next(createError(404));   
 });
 
 // error handler

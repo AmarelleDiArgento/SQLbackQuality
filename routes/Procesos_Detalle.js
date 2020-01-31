@@ -6,7 +6,7 @@ var Procesos_Detalle = require("../modules/Procesos_Detalle");
 //insert data Procesos_Detalle
 router.post("/Pdins", function (req, res, next) {
 
-  var proData = req.body
+  var prodetdata = req.body
   // console.log(proData);
 
   Procesos_Detalle.insData(prodetdata, function (error, data) {

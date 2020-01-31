@@ -14,7 +14,7 @@ pool.on('error', err => {
 })
 
 let ins = (prodetdata) => {
-  return `INSERT INTO [dbo].[Procesos_Detalle] ([id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
+  return `INSERT INTO [Formularios].[dbo].[Procesos_Detalle] ([id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
           [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1])
           VALUES(${prodetdata.id_proceso},'${prodetdata.codigo_detalle}','${prodetdata.nombre_detalle}','${prodetdata.tipo}'
           '${prodetdata.lista_desp}','${prodetdata.tipo_M}','${prodetdata.porcentaje}','${prodetdata.capitulo}',
@@ -44,7 +44,7 @@ let log = (prodetdata) => {
           FROM [Formularios].[dbo].[Procesos_Detalle]
           WHERE [id_proceso] = ${prodetdata.id_proceso} AND [codigo_detalle] = '${prodetdata.codigo_detalle}';`;
 }
-let all = `SELECT [id_login_proc] ,[id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
+let all = `SELECT [id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
           [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
           FROM [Formularios].[dbo].[Procesos_Detalle]`;
 
