@@ -1,9 +1,11 @@
 {
     "db": {
-        "server": "10.50.1.120",
-
-        "user": "sa",
-        "password": "4dm1nPr0c",
+        "server": "10.50.1.123",
+        "options": {	
+            "instanceName": "Mercedes"	
+        },
+        "user": "Inventarios",
+        "password": "Inventarios2016*",
         "database": "Formularios",
         "connectionLimit": 200,
         "dateStrings": true,
