@@ -3,13 +3,13 @@ var router = express.Router();
 
 var proceso = require("../modules/proceso");
 
-//insert data proin
+//insert prodata proin
 router.post("/proins", function (req, res, next) {
 
-  var proData = req.body
+  var prodata = req.body
   // console.log(proData);
 
-  proceso.insData(proData, function (error, data) {
+  proceso.insData(prodata, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error
@@ -20,13 +20,16 @@ router.post("/proins", function (req, res, next) {
   });
 });
 
-//update data proin
+//update prodata proin
 router.put("/proupd/:id", function (req, res, next) {
 
-  var logData = {
+  var prodata = {
+    id_Proceso: req.params.id,
     ...req.body
   };
-  proceso.updData(proData, function (error, data) {
+  console.log(prodata);
+  
+  proceso.updData(prodata, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error
@@ -40,12 +43,12 @@ router.put("/proupd/:id", function (req, res, next) {
 //get one proin
 router.delete("/prodel/:id", function (req, res, next) {
 
-  var proData = {
+  var prodata = {
     id_Proceso: req.params.id
   };
   // console.log(req.params);
 
-  proceso.delData(proData, function (error, data) {
+  proceso.delData(prodata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
@@ -58,10 +61,10 @@ router.delete("/prodel/:id", function (req, res, next) {
 });
 //get one proin
 router.post("/proone/:id", function (req, res, next) {
-  var proData = {
+  var prodata = {
     id_Proceso: req.params.id
   };
-  proceso.idData(proData, function (error, data) {
+  proceso.idData(prodata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
@@ -75,8 +78,8 @@ router.post("/proone/:id", function (req, res, next) {
 
 //get all proin
 router.get("/proall", function (req, res, next) {
-  var proData = {};
-  proceso.allData(proData, function (error, data) {
+  var prodata = {};
+  proceso.allData(prodata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({

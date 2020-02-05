@@ -14,8 +14,11 @@ pool.on('error', err => {
 })
 
 let ins = (logdata) => {
+  console.log(logdata);
+  
   return `INSERT INTO [Formularios].[dbo].[login] ([id_usuario] ,[nombre_usuario] ,[password])
           VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.id_usuario}');`
+
 };
 let upd = (logdata) => {
   return `UPDATE [Formularios].[dbo].[login]
@@ -41,9 +44,12 @@ let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
 
 modLogin.insData = function (logdata, callback) {
 
+  console.log(ins(logdata));
+  
   poolConnect;
   var request = new sql.Request(pool)
   request.query(ins(logdata),
+
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils

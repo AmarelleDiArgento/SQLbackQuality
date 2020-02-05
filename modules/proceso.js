@@ -13,39 +13,37 @@ pool.on('error', err => {
   (error) ? e.admError(err): console.log("...Conectado...");
 })
 
-let ins = (data) => {
-  let insert = `
-  INSERT INTO [Formularios].[dbo].[Procesos] ([codigo_proceso], [nombre_proceso], [Personalizado1], [Personalizado2], [Personalizado3], [Personalizado4], [Personalizado5], [Personalizado1_Valor])
-  VALUES `
-  for (let i = 0; i < data.length; i++) {
-    const d = data[i];
-    insert += `(${d.codigo_proceso}, '${d.nombre_proceso}', '${d.Personalizado1}', '${d.Personalizado2}', '${d.Personalizado3}', '${d.Personalizado4}', '${d.Personalizado5}', '${d.Personalizado1_Valor}')`
-    insert += ((i + 1) < data.length) ? ',' : ';';
-  }
+let ins = (prodata) => {
+ return `
+  INSERT INTO [Formularios].[dbo].[Procesos]([codigo_proceso], [nombre_proceso], [Personalizado1], [Personalizado2], [Personalizado3], [Personalizado4], [Personalizado5], [Personalizado1_Valor])
+  VALUES('${prodata.codigo_proceso}', '${prodata.nombre_proceso}', '${prodata.Personalizado1}', '${prodata.Personalizado2}', '${prodata.Personalizado3}', '${prodata.Personalizado4}', '${prodata.Personalizado5}','${prodata.Personalizado1_Valor}');`
+ 
   // console.log(insert);
 
-  return insert
+  // return insert
 };
-let upd = (d) => {
+let upd = (prodata) => {
+  console.log(prodata);
+  
   return `
-  UPDATE [Formularios].[dbo].[Procesos]
-  SET    [codigo_proceso] = ${d.codigo_proceso},
-        ,[nombre_proceso] = '${d.nombre_proceso}',
-        ,[Personalizado1] = '${d.Personalizado1}',
-        ,[Personalizado2] = '${d.Personalizado2}',
-        ,[Personalizado3] = '${d.Personalizado3}',
-        ,[Personalizado4] = '${d.Personalizado4}',
-        ,[Personalizado5] = '${d.Personalizado5}',
-        ,[Personalizado1_Valor] = '${d.Personalizado2}',
-  WHERE [id_Proceso] = ${d.id_Proceso};`;
+  UPDATE  [Formularios].[dbo].[Procesos]
+  SET [codigo_proceso] = ${prodata.codigo_proceso}
+     ,[nombre_proceso] = ' ${prodata.nombre_proceso}'
+     ,[Personalizado1] = ' ${prodata.Personalizado1}'
+     ,[Personalizado2] = ' ${prodata.Personalizado2}'
+     ,[Personalizado3] = ' ${prodata.Personalizado3}'
+     ,[Personalizado4] = ' ${prodata.Personalizado4}'
+     ,[Personalizado5] = ' ${prodata.Personalizado5}'
+     ,[Personalizado1_Valor] =  ${prodata.Personalizado1_Valor}
+WHERE [id_Proceso] =  ${prodata.id_Proceso} ;`
 }
-let del = (d) => {
+let del = (prodata) => {
   return `
   DELETE FROM [Formularios].[dbo].[Procesos]
-  WHERE [id_Proceso] = ${d.id_Proceso};
+  WHERE [id_Proceso] = ${prodata.id_Proceso};
         `;
 }
-let one = (d) => {
+let one = (prodata) => {
   return `
   SELECT 
   [id_Proceso], 
@@ -57,8 +55,8 @@ let one = (d) => {
   [Personalizado4], 
   [Personalizado5],
   [Personalizado1_Valor]
-  FROM [dbo].[Procesos]
-  WHERE [id_Proceso] = ${d.id_Proceso};`;
+  FROM [Formularios].[dbo].[Procesos]
+  WHERE [id_Proceso] = ${prodata.id_Proceso};`;
 }
 
 let all = ` 
@@ -83,13 +81,16 @@ modProceso.insData = function (prodata, callback) {
 };
 
 modProceso.updData = function (prodata, callback) {
-
+  console.log(upd(prodata));
   poolConnect;
   var request = new sql.Request(pool)
   request.query(upd(prodata),
     function (error, rows) {
+      
       if (error) {
         // Manejo de error en el middleware utils
+      
+        
         callback(null, e.admError(error));
       } else {
         // Empaquetado de resultados en el middleware utils

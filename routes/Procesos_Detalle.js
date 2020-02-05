@@ -4,7 +4,7 @@ var router = express.Router();
 var Procesos_Detalle = require("../modules/Procesos_Detalle");
 
 //insert data Procesos_Detalle
-router.post("/Pdins", function (req, res, next) {
+router.post("/pdins", function (req, res, next) {
 
   var prodetdata = req.body
   // console.log(proData);
@@ -21,7 +21,7 @@ router.post("/Pdins", function (req, res, next) {
 });
 
 //update data Procesos_Detalle
-router.put("/Pdupd/:id", function (req, res, next) {
+router.put("/pdupd/:id", function (req, res, next) {
 
   var prodetdata = {
     ...req.body
@@ -56,7 +56,7 @@ router.post("/Procesos_Detalle", function (req, res, next) {
 });
 
 //get one Procesos_Detalle
-router.delete("/Pddel/:id", function (req, res, next) {
+router.delete("/pddel/:id", function (req, res, next) {
   var prodetdata = {
     id_Datos: req.params.id
   };
@@ -75,7 +75,7 @@ router.delete("/Pddel/:id", function (req, res, next) {
 });
 
 //get one Procesos_Detalle
-router.post("/Pdone/:id", function (req, res, next) {
+router.post("/pdone/:id", function (req, res, next) {
   var prodetdata = {
     id_Datos: req.params.id
   };
@@ -91,8 +91,26 @@ router.post("/Pdone/:id", function (req, res, next) {
   });
 });
 
+
+//get fil Procesos_Detalle
+router.post("/pdfil/:id", function (req, res, next) {
+  var prodetdata = {
+    id_proceso: req.params.id
+    };
+  Procesos_Detalle.idData(prodetdata, function (error, data) {
+    if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
+
 //get all Procesos_Detalle
-router.get("/Pdall", function (req, res, next) {
+router.get("/pdall", function (req, res, next) {
   var prodetdata = {};
   Procesos_Detalle.allData(prodetdata, function (error, data) {
     if (error) {

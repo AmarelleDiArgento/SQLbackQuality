@@ -6,10 +6,10 @@ var login = require("../modules/login");
 //insert data login
 router.post("/logins", function (req, res, next) {
 
-  var proData = req.body
+  var logdata = req.body
   // console.log(proData);
 
-  login.insData(logData, function (error, data) {
+  login.insData(logdata, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error

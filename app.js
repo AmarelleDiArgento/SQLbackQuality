@@ -10,6 +10,7 @@ const cors = require('cors');
 var index = require('./routes/index');
 var login = require('./routes/login');
 var proceso = require('./routes/proceso');
+var procesos_detalle = require('./routes/Procesos_Detalle');
 var desplegable = require('./routes/desplegable');
 var grafica = require('./routes/grafica');
 
@@ -75,8 +76,17 @@ app.get("/logall", login);
 app.post("/proins", proceso);
 app.put("/proupd/:id", proceso);
 app.delete("/prodel/:id", proceso);
-app.get("/proone/:id", proceso);
+app.post("/proone/:id", proceso);
 app.get("/proall", proceso);
+
+//urls procesos detalle
+app.post("/pdins", procesos_detalle);
+app.put("/pdupd/:id", procesos_detalle);
+app.delete("/pddel/:id", procesos_detalle);
+app.post("/pdone/:id", procesos_detalle);
+app.post("/pdfil/:id", procesos_detalle);
+app.get("/pdall", procesos_detalle);
+
 
 //urls desplegables
 app.post("/desins", desplegable);
@@ -92,7 +102,7 @@ app.get("/desall", desplegable);
 // app.put("/proupd/:id", proceso);
 // app.delete("/prodel/:id", proceso);
 // app.post("/proone/:id", proceso);
-app.get("/graall", grafica);
+// app.get("/graall", grafica);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

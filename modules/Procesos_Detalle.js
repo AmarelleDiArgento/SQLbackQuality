@@ -14,11 +14,11 @@ pool.on('error', err => {
 })
 
 let ins = (prodetdata) => {
-  return `INSERT INTO [Formularios].[dbo].[Procesos_Detalle] ([id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
-          [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1])
-          VALUES(${prodetdata.id_proceso},'${prodetdata.codigo_detalle}','${prodetdata.nombre_detalle}','${prodetdata.tipo}'
-          '${prodetdata.lista_desp}','${prodetdata.tipo_M}','${prodetdata.porcentaje}','${prodetdata.capitulo}',
-          '${prodetdata.item}','${prodetdata.Capitulo_Nombre}','${prodetdata.grupo1}');`
+  return `INSERT INTO [Formularios].[dbo].[Procesos_Detalle]([id_proceso], [codigo_detalle], [nombre_detalle], [tipo],
+          [lista_desp], [tipo_M], [porcentaje], [capitulo], [item], [Capitulo_Nombre], [grupo1])
+          VALUES('${prodetdata.id_proceso}', '${prodetdata.codigo_detalle}', '${prodetdata.nombre_detalle}', '${prodetdata.tipo}',
+          '${prodetdata.lista_desp}', '${prodetdata.tipo_M}', '${prodetdata.porcentaje}', '${prodetdata.capitulo}',
+          '${prodetdata.item}','${prodetdata.Capitulo_Nombre}', '${prodetdata.grupo1}');`
 }
 let upd = (prodetdata) => {
   return `UPDATE [dbo].[Procesos_Detalle]
@@ -38,6 +38,13 @@ let one = (prodetdata) => {
           FROM [Formularios].[dbo].[Procesos_Detalle]
           WHERE id_detalle = ${prodetdata.id_detalle};`;
         }
+
+let fil = (prodetdata) => {
+  return `SELECT [id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
+          [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
+          FROM [Formularios].[dbo].[Procesos_Detalle]
+          WHERE id_proceso = ${prodetdata.id_proceso};`;
+          }
 let log = (prodetdata) => {
   return `SELECT [id_detalle] ,[id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
           [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
@@ -103,6 +110,23 @@ modprodet.idData = function (prodetdata, callback) {
   // console.log('Data en modulo', prodetdata)
   var request = new sql.Request(pool)
   request.query(one(prodetdata),
+    function (error, rows) {
+      if (error) {
+        // Manejo de error en el middleware utils
+        callback(null, e.admError(error));
+      } else {
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
+      }
+    })
+};
+
+modprodet.idData = function (prodetdata, callback) {
+
+  poolConnect;
+  // console.log('Data en modulo', prodetdata)
+  var request = new sql.Request(pool)
+  request.query(fil(prodetdata),
     function (error, rows) {
       if (error) {
         // Manejo de error en el middleware utils

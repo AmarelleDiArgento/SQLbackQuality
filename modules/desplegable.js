@@ -110,7 +110,7 @@ modDesplegable.idData = function (desdata, callback) {
       }
     })
 };
-modDesplegable.Filtro = function (desdata, callback) {
+modDesplegable.idData = function (desdata, callback) {
 
   poolConnect;
   // console.log('Data en modulo', desdata)

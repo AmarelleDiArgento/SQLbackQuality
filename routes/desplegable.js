@@ -73,12 +73,12 @@ router.post("/desone/:id", function (req, res, next) {
   });
 });
 
-//get one login
-router.post("/desfil/:Filtro", function (req, res, next) {
+//get fil desplegable
+router.post("/desfil/:id", function (req, res, next) {
   var desdata = {
-    Filtro: req.params.Filtro
+    Filtro: req.params.id
   };
-    desplegable.Filtro(desdata, function (error, data) {
+    desplegable.idData(desdata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
