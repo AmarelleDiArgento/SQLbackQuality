@@ -56,7 +56,7 @@ let one = (prodata) => {
   [Personalizado5],
   [Personalizado1_Valor]
   FROM [Formularios].[dbo].[Procesos]
-  WHERE [id_Proceso] = ${prodata.id_Proceso};`;
+  WHERE [codigo_proceso] = ${prodata.codigo_detalle};`;
 }
 
 let all = ` 

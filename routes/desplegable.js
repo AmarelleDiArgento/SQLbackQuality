@@ -78,7 +78,7 @@ router.post("/desfil/:id", function (req, res, next) {
   var desdata = {
     Filtro: req.params.id
   };
-    desplegable.idData(desdata, function (error, data) {
+    desplegable.filData(desdata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({

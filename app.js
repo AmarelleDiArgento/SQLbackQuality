@@ -93,7 +93,7 @@ app.post("/desins", desplegable);
 app.put("/desupd/:id", desplegable);
 app.delete("/desdel/:id", desplegable);
 app.post("/desone/:id", desplegable);
-app.post("/desfil/:Filtro", desplegable);
+app.post("/desfil/:id", desplegable);
 app.get("/desall", desplegable);
 
 
@@ -102,7 +102,9 @@ app.get("/desall", desplegable);
 // app.put("/proupd/:id", proceso);
 // app.delete("/prodel/:id", proceso);
 // app.post("/proone/:id", proceso);
-// app.get("/graall", grafica);
+ app.get("/grapos", grafica);
+ app.get("/gracul", grafica);
+ app.post("/graexp", grafica);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

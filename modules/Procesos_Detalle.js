@@ -10,7 +10,7 @@ const pool = new sql.ConnectionPool(config.db);
 const poolConnect = pool.connect();
 
 pool.on('error', err => {
-  (error) ? e.admError(err):  console.log("...Conectado...");
+  (error) ? e.admError(err): console.log("...Conectado...");
 })
 
 let ins = (prodetdata) => {
@@ -37,14 +37,15 @@ let one = (prodetdata) => {
           [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
           FROM [Formularios].[dbo].[Procesos_Detalle]
           WHERE id_detalle = ${prodetdata.id_detalle};`;
-        }
+}
 
 let fil = (prodetdata) => {
   return `SELECT [id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
-          [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
-          FROM [Formularios].[dbo].[Procesos_Detalle]
-          WHERE id_proceso = ${prodetdata.id_proceso};`;
-          }
+  [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
+  FROM [Formularios].[dbo].[Procesos_Detalle]
+  WHERE id_proceso = ${prodetdata.codigo_detalle}
+ORDER BY capitulo, [item] ;`;
+}
 let log = (prodetdata) => {
   return `SELECT [id_detalle] ,[id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
           [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
@@ -55,7 +56,7 @@ let all = `SELECT [id_proceso] ,[codigo_detalle] ,[nombre_detalle], [tipo] ,
           [lista_desp] ,[tipo_M] ,[porcentaje] ,[capitulo] ,[item] ,[Capitulo_Nombre] ,[grupo1]
           FROM [Formularios].[dbo].[Procesos_Detalle]`;
 
-  modprodet.insData = function (prodetdata, callback) {
+modprodet.insData = function (prodetdata, callback) {
 
   poolConnect;
   var request = new sql.Request(pool)
@@ -121,18 +122,22 @@ modprodet.idData = function (prodetdata, callback) {
     })
 };
 
-modprodet.idData = function (prodetdata, callback) {
+modprodet.filData = function (prodetdata, callback) {
 
   poolConnect;
   // console.log('Data en modulo', prodetdata)
   var request = new sql.Request(pool)
   request.query(fil(prodetdata),
     function (error, rows) {
+      console.log(fil(prodetdata));
+
       if (error) {
         // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
         // Empaquetado de resultados en el middleware utils
+        console.log(rows);
+
         callback(null, e.paqReturn(rows))
       }
     })

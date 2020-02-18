@@ -19,6 +19,7 @@ let ins = (desdata) => {
           VALUES('${desdata.Filtro}', '${desdata.Codigo}', '${desdata.Opcion}');`
 };
 let upd = (desdata) => {
+   
   return `UPDATE [Formularios].[dbo].[Desplegables]
           SET [Filtro] = '${desdata.Filtro}', [Codigo] = '${desdata.Codigo}', [Opcion] = '${desdata.Opcion}'
           WHERE [id_Desplegable] = ${desdata.id_Desplegable};`;
@@ -35,13 +36,9 @@ let one = (desdata) => {
 let fil = (desdata) => {
   return `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
           FROM [Formularios].[dbo].[Desplegables]
-          WHERE Filtro = ${desdata.Filtro};`;
+          WHERE Filtro = '${desdata.Filtro}';`;
 }
-let log = (desdata) => {
-  return `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
-          FROM [Formularios].[dbo].[Desplegable]
-          WHERE [Filtro] = ${desdata.Filtro} AND [Codigo] = '${desdata.Codigo}';`;
-}
+
 let all = `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
           FROM [Formularios].[dbo].[Desplegables]`;
 
@@ -110,7 +107,7 @@ modDesplegable.idData = function (desdata, callback) {
       }
     })
 };
-modDesplegable.idData = function (desdata, callback) {
+modDesplegable.filData = function (desdata, callback) {
 
   poolConnect;
   // console.log('Data en modulo', desdata)
@@ -126,6 +123,7 @@ modDesplegable.idData = function (desdata, callback) {
       }
     })
 };
+
 modDesplegable.desdata = function (desdata, callback) {
 
   poolConnect;

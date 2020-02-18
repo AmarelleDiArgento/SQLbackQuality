@@ -99,7 +99,7 @@ modeloUtils.paqReturn = function (rows, rollback) {
   if (rows.recordset.length != 0) {
     return {
       respuesta: 'success',
-      rows: (rows.recordset.length > 1) ? rows.recordset : rows.recordset[0],
+      rows: rowsReturn(rows),
       output: rows.output,
       rowsAffected: rows.rowsAffected
     }
@@ -115,6 +115,16 @@ modeloUtils.paqReturn = function (rows, rollback) {
       rowsAffected: rows.rowsAffected
 
     };
+  }
+}
+let rowsReturn = (rows) => {
+  if (rows.recordsets.length > 1) {
+    console.log('RecordSets', rows.recordsets);
+
+    return rows.recordsets
+  } else {
+    console.log('RecordSet', rows.recordset);
+    return (rows.recordset.length > 1) ? rows.recordset : rows.recordset[0]
   }
 }
 

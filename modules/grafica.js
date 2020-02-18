@@ -4,6 +4,20 @@ var config = require("../config");
 var e = require("../utils/utils")
 var modGrafica = {};
 
+toSQLDateString = (date) => { // Formato SQL: 'yyyy-mm-dd'
+  return `${date.getFullYear()}-${cero(date.getMonth() + 1)}-${cero(date.getDate())}`;
+}
+
+cero = (n) => {
+  return (n < 10 ? '0' : '') + n;
+}
+
+var fecha = () => {
+  let f = new Date();
+  (f.getHours() >= 13) ? f.getDate(): f.setDate(f.getDate() - 1)
+  return toSQLDateString(f)
+}
+
 
 // async/await style:
 const pool = new sql.ConnectionPool(config.db);
@@ -59,18 +73,151 @@ let Items = (area, postcosecha, proceso, capitulo, short) => {
   GROUP BY item;`;
 }
 
-let all = `
+let pos = `
   SELECT fecha, Postcosecha, Area, nombre_proceso, Capitulo, Short_Item, item, Total_Si, Total_No
     FROM Formularios.dbo.Vista_Postco
-    WHERE fecha between '2020-01-31 00:00:00' and '2020-02-01 23:59:59'
+    WHERE fecha >= '${fecha()} 00:00:00'
     ORDER BY Postcosecha, nombre_proceso;
 `;
 
-modGrafica.allData = function (logdata, callback) {
+
+let cul = `
+SELECT TOP (1000) [fecha],[Finca],[Area],[nombre_proceso],[Capitulo],[Short_Item],[item],[Total_Si],[Total_No]
+FROM [Formularios].[dbo].[Vista_Cultivo];
+`;
+
+let exp = (fIn, fFi) => {
+  return `
+          /* crea la temporal */
+          CREATE TABLE ##tempData
+          (
+            Postcosecha varchar(max),
+            Dia date,
+            Asegurador varchar(max),
+            Hora int,
+            Proceso varchar(max),
+            Aseguramientos int
+          )
+          /* Alimenta la temporal con los datos por hora asegurador, proceso, dia x dia segun el rango de seleccion */
+          INSERT INTO ##tempData SELECT
+            [valor_resp_d] as Postcosecha,
+            CONVERT(DATE, [fecha]) as Dia,
+            UPPER([nombre_usuario]) as Asegurador,
+            datepart(hour, [fecha]) as Hora,
+            [nombre_proceso] as Proceso,
+            count([id_usuario]) as Aseguramientos
+          FROM [Formularios].[dbo].[Postco_cab_Act]
+          Where
+            [fecha] between '${fIn} 00:00:00'
+            and '${fFi} 23:59:59'
+          GROUP BY
+            [valor_resp_d],
+            CONVERT(DATE, [fecha]),
+            [nombre_usuario],
+            datepart(hour, [fecha]),
+            [nombre_proceso]
+          ORDER BY
+            [valor_resp_d],
+            CONVERT(DATE, [fecha]),
+            [nombre_usuario],
+            datepart(hour, [fecha]),
+            [nombre_proceso];
+            /* media geometrica, promedio y variacion estandard por proceso */
+          select
+            Proceso,
+            exp(sum(log(Aseguramientos)) / count(*)) as media_geo,
+            STDEVP(Aseguramientos) var_sta,
+            AVG(Aseguramientos) prom
+          from ##tempData
+          group by
+            Proceso;
+            /* Media geometrica y horas de actividad por asegurador */
+          Select
+            Postcosecha,
+            Dia,
+            Asegurador,
+            Proceso,
+            exp(sum(log(Aseguramientos)) / count(*)) as media_geo,
+            count(*) horas_act
+          from ##tempData
+          group by
+            Postcosecha,
+            Dia,
+            Asegurador,
+            Proceso;
+            /* Toda la data optenida */
+          select
+            *
+          from ##tempData;
+            /* Borra la temporal */
+            drop table ##tempData;
+
+  `
+}
+
+modGrafica.posData = function (logdata, callback) {
   poolConnect;
   var request = new sql.Request(pool)
+  console.log(pos);
+
+  request.query(pos,
+    function (error, rows) {
+
+      if (error) {
+        // Manejo de error en el middleware utils
+        callback(null, e.admError(error));
+      } else {
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
+      }
+    });
+};
+
+modGrafica.culData = function (logdata, callback) {
+  poolConnect;
+  var request = new sql.Request(pool)
+  console.log(cul);
+
+  request.query(cul,
+    function (error, rows) {
+
+      if (error) {
+        // Manejo de error en el middleware utils
+        callback(null, e.admError(error));
+      } else {
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
+      }
+    });
+};
+
+modGrafica.expData = function (logdata, callback) {
+  poolConnect;
+  var request = new sql.Request(pool)
+  console.log(all);
+  console.log(exp(logdata.ini, logdata.fin));
+  request.query(exp(logdata.ini, logdata.fin),
+    function (error, rows) {
+
+      if (error) {
+        // Manejo de error en el middleware utils
+        callback(null, e.admError(error));
+      } else {
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
+      }
+    });
+};
+
+
+modGrafica.asegData = function (logdata, callback) {
+  poolConnect;
+  var request = new sql.Request(pool)
+  console.log(all);
+
   request.query(all,
     function (error, rows) {
+
       if (error) {
         // Manejo de error en el middleware utils
         callback(null, e.admError(error));
@@ -83,9 +230,6 @@ modGrafica.allData = function (logdata, callback) {
 
 modGrafica.allDataTest = function (logdata, callback) {
 
-  function texto() {
-    return 'Hola :D'
-  }
 
 
   function dataAreas() {

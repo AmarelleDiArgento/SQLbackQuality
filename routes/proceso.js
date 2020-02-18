@@ -62,7 +62,7 @@ router.delete("/prodel/:id", function (req, res, next) {
 //get one proin
 router.post("/proone/:id", function (req, res, next) {
   var prodata = {
-    id_Proceso: req.params.id
+    codigo_detalle: req.params.id
   };
   proceso.idData(prodata, function (error, data) {
     if (error) {

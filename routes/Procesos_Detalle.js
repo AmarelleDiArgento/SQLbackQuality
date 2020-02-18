@@ -77,7 +77,7 @@ router.delete("/pddel/:id", function (req, res, next) {
 //get one Procesos_Detalle
 router.post("/pdone/:id", function (req, res, next) {
   var prodetdata = {
-    id_Datos: req.params.id
+    id_proceso: req.params.id
   };
   Procesos_Detalle.idData(prodetdata, function (error, data) {
     if (error) {
@@ -95,9 +95,11 @@ router.post("/pdone/:id", function (req, res, next) {
 //get fil Procesos_Detalle
 router.post("/pdfil/:id", function (req, res, next) {
   var prodetdata = {
-    id_proceso: req.params.id
-    };
-  Procesos_Detalle.idData(prodetdata, function (error, data) {
+    codigo_detalle: req.params.id
+  };
+  console.log(prodetdata);
+
+  Procesos_Detalle.filData(prodetdata, function (error, data) {
     if (error) {
 
       res.status(504).jsonp({
