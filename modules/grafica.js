@@ -19,6 +19,12 @@ var fecha = () => {
 }
 
 
+var fechaPre = () => {
+  let f = new Date();
+  (f.getHours() >= 13) ? f.setDate(f.getDate() - 6): f.setDate(f.getDate() - 7)
+  return toSQLDateString(f)
+}
+
 // async/await style:
 const pool = new sql.ConnectionPool(config.db);
 const poolConnect = pool.connect();
@@ -82,8 +88,10 @@ let pos = `
 
 
 let cul = `
-SELECT TOP (1000) [fecha],[Finca],[Area],[nombre_proceso],[Capitulo],[Short_Item],[item],[Total_Si],[Total_No]
-FROM [Formularios].[dbo].[Vista_Cultivo];
+  SELECT [fecha],[Finca],[Area],[nombre_proceso],[Capitulo],[Short_Item],[item],[Total_Si],[Total_No]
+    FROM [Formularios].[dbo].[Vista_Cultivo]
+    WHERE fecha between '${fechaPre()} 00:00:00' and '${fecha()} 23:59:59'
+    ORDER BY Finca, nombre_proceso;
 `;
 
 let exp = (fIn, fFi) => {
