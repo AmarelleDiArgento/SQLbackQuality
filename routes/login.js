@@ -39,8 +39,10 @@ router.put("/logupd/:id", function (req, res, next) {
 
 //get login user
 router.post("/login", function (req, res, next) {
+  console.log(req.body);
+  
   var logData = {
-    id_usuario: req.body.id_usuario,
+    usuario: req.body.usuario,
     password: req.body.password
   };
   login.logData(logData, function (error, data) {

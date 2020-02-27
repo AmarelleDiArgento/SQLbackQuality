@@ -102,8 +102,8 @@ app.get("/desall", desplegable);
 // app.put("/proupd/:id", proceso);
 // app.delete("/prodel/:id", proceso);
 // app.post("/proone/:id", proceso);
- app.get("/grapos", grafica);
- app.get("/gracul", grafica);
+ app.post("/grapos", grafica);
+ app.post("/gracul", grafica);
  app.post("/graexp", grafica);
 
 // catch 404 and forward to error handler

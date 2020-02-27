@@ -79,20 +79,23 @@ let Items = (area, postcosecha, proceso, capitulo, short) => {
   GROUP BY item;`;
 }
 
-let pos = `
+let pos = (fIn, fFi) => {
+  return `
   SELECT fecha, Postcosecha, Area, nombre_proceso, Capitulo, Short_Item, item, Total_Si, Total_No
     FROM Formularios.dbo.Vista_Postco
-    WHERE fecha >= '${fecha()} 00:00:00'
+    WHERE fecha between '${fIn} 00:00:00' and '${fFi} 23:59:59'
     ORDER BY Postcosecha, nombre_proceso;
-`;
+`
+};
 
 
-let cul = `
+let cul = (fIn, fFi) => {
+  return `
   SELECT [fecha],[Finca],[Area],[nombre_proceso],[Capitulo],[Short_Item],[item],[Total_Si],[Total_No]
     FROM [Formularios].[dbo].[Vista_Cultivo]
-    WHERE fecha between '${fechaPre()} 00:00:00' and '${fecha()} 23:59:59'
-    ORDER BY Finca, nombre_proceso;
-`;
+    WHERE fecha between '${fIn} 00:00:00' and '${fFi} 23:59:59'
+    ORDER BY Finca, nombre_proceso;`
+};
 
 let exp = (fIn, fFi) => {
   return `
@@ -168,7 +171,7 @@ modGrafica.posData = function (logdata, callback) {
   var request = new sql.Request(pool)
   console.log(pos);
 
-  request.query(pos,
+  request.query(pos(logdata[0].formatoSql, logdata[1].formatoSql),
     function (error, rows) {
 
       if (error) {
@@ -186,7 +189,7 @@ modGrafica.culData = function (logdata, callback) {
   var request = new sql.Request(pool)
   console.log(cul);
 
-  request.query(cul,
+  request.query(cul(logdata[0].formatoSql, logdata[1].formatoSql),
     function (error, rows) {
 
       if (error) {

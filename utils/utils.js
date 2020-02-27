@@ -119,11 +119,11 @@ modeloUtils.paqReturn = function (rows, rollback) {
 }
 let rowsReturn = (rows) => {
   if (rows.recordsets.length > 1) {
-    console.log('RecordSets', rows.recordsets);
+    // console.log('RecordSets', rows.recordsets);
 
     return rows.recordsets
   } else {
-    console.log('RecordSet', rows.recordset);
+    // console.log('RecordSet', rows.recordset);
     return (rows.recordset.length > 1) ? rows.recordset : rows.recordset[0]
   }
 }

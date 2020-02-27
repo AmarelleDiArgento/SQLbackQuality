@@ -35,9 +35,12 @@ let one = (logdata) => {
           WHERE id_login = ${logdata.id_login};`;
 }
 let log = (logdata) => {
-  return `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
-          FROM [Formularios].[dbo].[login]
-          WHERE [id_usuario] = ${logdata.id_usuario} AND [password] = '${logdata.password}';`;
+  return `
+  SELECT l.id_usuario, l.nombre_usuario, l.Grupo1, l.Grupo2, l.Grupo3, p.nombre_permiso, p.url, p.estado 
+  FROM Formularios.dbo.login l
+  LEFT OUTER JOIN Formularios.dbo.login_permisos lp on l.id_login = lp.id_login
+  FULL OUTER JOIN Formularios.dbo.Permisos p on lp.id_permiso = p.id_Permiso
+  WHERE [id_usuario] = ${logdata.usuario} AND [password] = '${logdata.password}';`;
 }
 let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
           FROM [Formularios].[dbo].[login]`;

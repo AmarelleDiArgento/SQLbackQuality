@@ -4,8 +4,11 @@ var router = express.Router();
 var grafica = require("../modules/grafica");
 
 //get all grafica
-router.get("/grapos", function (req, res, next) {
-  var graData = {};
+router.post("/grapos", function (req, res, next) {
+  var graData = {
+    ...req.body
+  };
+  console.log(graData);
   grafica.posData(graData, function (error, data) {
     if (error) {
 
@@ -18,8 +21,12 @@ router.get("/grapos", function (req, res, next) {
   });
 });
 
-router.get("/gracul", function (req, res, next) {
-  var graData = {};
+router.post("/gracul", function (req, res, next) {
+  var graData = {
+    ...req.body
+  };
+  console.log(graData);
+
   grafica.culData(graData, function (error, data) {
     if (error) {
 
