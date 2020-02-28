@@ -169,7 +169,7 @@ let exp = (fIn, fFi) => {
 modGrafica.posData = function (logdata, callback) {
   poolConnect;
   var request = new sql.Request(pool)
-  console.log(pos);
+  console.log(pos(logdata[0].formatoSql, logdata[1].formatoSql));
 
   request.query(pos(logdata[0].formatoSql, logdata[1].formatoSql),
     function (error, rows) {
@@ -187,7 +187,7 @@ modGrafica.posData = function (logdata, callback) {
 modGrafica.culData = function (logdata, callback) {
   poolConnect;
   var request = new sql.Request(pool)
-  console.log(cul);
+  console.log(cul(logdata[0].formatoSql, logdata[1].formatoSql));
 
   request.query(cul(logdata[0].formatoSql, logdata[1].formatoSql),
     function (error, rows) {
