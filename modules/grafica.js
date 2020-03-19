@@ -91,10 +91,10 @@ let pos = (fIn, fFi) => {
 
 let cul = (fIn, fFi) => {
   return `
-  SELECT [fecha],[Finca],[Area],[nombre_proceso],[Capitulo],[Short_Item],[item],[Total_Si],[Total_No]
+  SELECT [fecha],TRIM([Finca]) as Finca,[Area],[Supervisor],[nombre_proceso],[Capitulo],[Short_Item],[item],[Total_Si],[Total_No]
     FROM [Formularios].[dbo].[Vista_Cultivo]
     WHERE fecha between '${fIn} 00:00:00' and '${fFi} 23:59:59'
-    ORDER BY Finca, nombre_proceso;`
+    ORDER BY TRIM(Finca), nombre_proceso;`
 };
 
 let exp = (fIn, fFi) => {
