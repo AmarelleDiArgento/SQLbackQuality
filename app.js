@@ -104,6 +104,7 @@ app.get("/desall", desplegable);
 // app.post("/proone/:id", proceso);
  app.post("/grapos", grafica);
  app.post("/gracul", grafica);
+ app.post("/grapla", grafica);
  app.post("/graexp", grafica);
 
 // catch 404 and forward to error handler

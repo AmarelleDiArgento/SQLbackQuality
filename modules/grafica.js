@@ -97,6 +97,15 @@ let cul = (fIn, fFi) => {
     ORDER BY TRIM(Finca), nombre_proceso;`
 };
 
+
+let pla = (fIn, fFi) => {
+  return `
+  SELECT TRIM([Finca]) as Finca, [Nave] as Area, TRIM([producto]) as Supervisor, TRIM(CONCAT([NombreBloque],[Sufijo])) as nombre_proceso, '' as Capitulo, [nombre_detalle] as Short_Item, [nombre_detalle] as item, [Total_Si], [Total_No]
+    FROM [Formularios].[dbo].[vista_Aud_Siembra] 
+    WHERE fecha between '${fIn} 00:00:00' and '${fFi} 23:59:59' and Finca IS NOT NULL
+    ORDER BY TRIM(Finca), nombre_proceso;`
+};
+
 let exp = (fIn, fFi) => {
   return `
           /* crea la temporal */
@@ -190,6 +199,24 @@ modGrafica.culData = function (logdata, callback) {
   console.log(cul(logdata[0].formatoSql, logdata[1].formatoSql));
 
   request.query(cul(logdata[0].formatoSql, logdata[1].formatoSql),
+    function (error, rows) {
+
+      if (error) {
+        // Manejo de error en el middleware utils
+        callback(null, e.admError(error));
+      } else {
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
+      }
+    });
+};
+
+modGrafica.plaData = function (logdata, callback) {
+  poolConnect;
+  var request = new sql.Request(pool)
+  console.log(pla(logdata[0].formatoSql, logdata[1].formatoSql));
+
+  request.query(pla(logdata[0].formatoSql, logdata[1].formatoSql),
     function (error, rows) {
 
       if (error) {

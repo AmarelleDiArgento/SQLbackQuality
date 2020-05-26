@@ -39,6 +39,23 @@ router.post("/gracul", function (req, res, next) {
   });
 });
 
+//get plantas grafica
+router.post("/grapla", function (req, res, next) {
+  var graData = {
+    ...req.body
+  };
+  console.log(graData);
+  grafica.plaData(graData, function (error, data) {
+    if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
 
 //get all grafica
 router.post("/graexp", function (req, res, next) {
