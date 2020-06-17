@@ -40,13 +40,34 @@ router.put("/logupd/:id", function (req, res, next) {
 //get login user
 router.post("/login", function (req, res, next) {
   console.log(req.body);
-  
+
   var logData = {
     usuario: req.body.usuario,
     password: req.body.password
   };
   login.logData(logData, function (error, data) {
     if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
+
+
+//get login user
+router.post("/loginfull", function (req, res, next) {
+  
+  var logData = {
+    usuario: req.body.usuario,
+    password: req.body.password
+  };
+  login.logallData(logData, function (error, data) {
+    if (error) {
+      console.log(error);
 
       res.status(504).jsonp({
         error: error

@@ -71,6 +71,7 @@ app.delete("/logdel/:id", login);
 app.post("/login", login);
 app.post("/logone/:id", login);
 app.get("/logall", login);
+app.post("/loginfull", login);
 
 //urls procesos
 app.post("/proins", proceso);

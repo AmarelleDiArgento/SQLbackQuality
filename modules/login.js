@@ -10,12 +10,12 @@ const pool = new sql.ConnectionPool(config.db);
 const poolConnect = pool.connect();
 
 pool.on('error', err => {
-  (error) ? e.admError(err):  console.log("...Conectado...");
+  (error) ? e.admError(err) : console.log("...Conectado...");
 })
 
 let ins = (logdata) => {
   console.log(logdata);
-  
+
   return `INSERT INTO [Formularios].[dbo].[login] ([id_usuario] ,[nombre_usuario] ,[password])
           VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.id_usuario}');`
 
@@ -42,13 +42,35 @@ let log = (logdata) => {
   FULL OUTER JOIN Formularios.dbo.Permisos p on lp.id_permiso = p.id_Permiso
   WHERE [id_usuario] = ${logdata.usuario} AND [password] = '${logdata.password}';`;
 }
+
+
+let logfull = (logdata) => {
+  return `
+  SELECT (
+  SELECT 	usuario.id_login  as [key], usuario.id_usuario as [codigo], usuario.nombre_usuario as [nombre], usuario.Grupo1 as [g1], usuario.Grupo2  as [g2], usuario.Grupo3  as [g3], 
+			modulos.id_modulo as [id], modulos.nombre_modulo as [nombre], 
+			permisos.id_Permiso as [id], TRIM( permisos.nombre_permiso) as [nombre], permisos.url  as [url],
+			reportes.id_reporte as [id], reportes.nombre_reporte as [reporte], reportes.url_reporte as [url], reportes.descripcion_reporte as [descripcion]
+  FROM Formularios.dbo.login usuario 
+      full outer  join Formularios.dbo.login_permisos  lp on usuario.id_login = lp.id_login 
+      full outer join Formularios.dbo.Permisos permisos on lp.id_permiso = permisos.id_Permiso
+      full outer join Formularios.dbo.reportes reportes on permisos.id_Permiso = reportes.id_permiso 
+      full outer join Formularios.dbo.modulos modulos on permisos.id_modulo = modulos.id_modulo 
+  WHERE [id_usuario] = ${logdata.usuario} AND [password] = '${logdata.password}'
+  ORDER BY modulos.id_modulo 
+  FOR JSON AUTO) DATA;`
+
+}
+
 let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
           FROM [Formularios].[dbo].[login]`;
+
+
 
 modLogin.insData = function (logdata, callback) {
 
   console.log(ins(logdata));
-  
+
   poolConnect;
   var request = new sql.Request(pool)
   request.query(ins(logdata),
@@ -135,6 +157,26 @@ modLogin.logData = function (logdata, callback) {
     })
 };
 
+modLogin.logallData = function (logdata, callback) {
+  
+  poolConnect;
+  var request = new sql.Request(pool)
+  request.query(logfull(logdata),
+    function (error, rows) {
+      if (error) {
+        // Manejo de error en el middleware Error
+        callback(null, e.admError(error));
+      } else {
+        if (error) {
+          // Manejo de error en el middleware utils
+          callback(null, e.admError(error));
+        } else {
+          // convertir texto resultante de SQL JSON a JSON          
+          callback(null, JSON.parse(rows.recordset[0].DATA))
+        }
+      }
+    })
+};
 modLogin.allData = function (logdata, callback) {
   poolConnect;
   var request = new sql.Request(pool)
