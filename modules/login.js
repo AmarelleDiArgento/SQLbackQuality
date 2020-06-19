@@ -47,18 +47,19 @@ let log = (logdata) => {
 let logfull = (logdata) => {
   return `
   SELECT (
-  SELECT 	usuario.id_login  as [key], usuario.id_usuario as [codigo], usuario.nombre_usuario as [nombre], usuario.Grupo1 as [g1], usuario.Grupo2  as [g2], usuario.Grupo3  as [g3], 
-			modulos.id_modulo as [id], modulos.nombre_modulo as [nombre], 
-			permisos.id_Permiso as [id], TRIM( permisos.nombre_permiso) as [nombre], permisos.url  as [url],
-			reportes.id_reporte as [id], reportes.nombre_reporte as [reporte], reportes.url_reporte as [url], reportes.descripcion_reporte as [descripcion]
-  FROM Formularios.dbo.login usuario 
-      full outer  join Formularios.dbo.login_permisos  lp on usuario.id_login = lp.id_login 
-      full outer join Formularios.dbo.Permisos permisos on lp.id_permiso = permisos.id_Permiso
-      full outer join Formularios.dbo.reportes reportes on permisos.id_Permiso = reportes.id_permiso 
-      full outer join Formularios.dbo.modulos modulos on permisos.id_modulo = modulos.id_modulo 
-  WHERE [id_usuario] = ${logdata.usuario} AND [password] = '${logdata.password}'
-  ORDER BY modulos.id_modulo 
-  FOR JSON AUTO) DATA;`
+    SELECT 	usuario.id_login  as [key], usuario.id_usuario as [codigo], usuario.nombre_usuario as [nombre], usuario.Grupo1 as [g1], usuario.Grupo2  as [g2], usuario.Grupo3  as [g3], 
+        modulos.id_modulo as [id], modulos.nombre_modulo as [nombre], modulos.estado_modulo as [estado],
+        permisos.id_Permiso as [id], TRIM( permisos.nombre_permiso) as [permiso], TRIM( permisos.url)  as [url],  permisos.estado as [estado],
+        reportes.id_reporte as [id], reportes.nombre_reporte as [reporte], reportes.url_reporte as [url], reportes.descripcion_reporte as [descripcion], reportes.estado_reporte  as [estado]
+    FROM Formularios.dbo.login usuario 
+        full outer  join Formularios.dbo.login_permisos  lp on usuario.id_login = lp.id_login 
+        full outer join Formularios.dbo.Permisos permisos on lp.id_permiso = permisos.id_Permiso
+        full outer join Formularios.dbo.reportes reportes on permisos.id_Permiso = reportes.id_permiso 
+        full outer join Formularios.dbo.modulos modulos on permisos.id_modulo = modulos.id_modulo 
+    WHERE [id_usuario] = ${logdata.usuario} AND [password] = '${logdata.password}'
+    ORDER BY modulos.id_modulo 
+    FOR JSON AUTO
+  ) DATA;`
 
 }
 
