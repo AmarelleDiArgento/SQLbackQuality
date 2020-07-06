@@ -107,6 +107,7 @@ app.get("/desall", desplegable);
  app.post("/gracul", grafica);
  app.post("/grapla", grafica);
  app.post("/graexp", grafica);
+ app.post("/gramon", grafica);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

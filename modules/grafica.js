@@ -106,6 +106,24 @@ let pla = (fIn, fFi) => {
     ORDER BY TRIM(Finca), nombre_proceso;`
 };
 
+
+let mon = (fIn, fFi) => {
+  return `
+  SELECT	[fecha],TRIM([Finca]) as Finca,[Area],
+  trim(REVERSE(PARSENAME(REPLACE(REVERSE([Variedad]), '-', '.'), 1))) AS Supervisor,
+  trim(REVERSE(PARSENAME(REPLACE(REVERSE([Variedad]), '-', '.'), 2))) AS Variedad,
+      CAST(CASE WHEN len([Bloque])>1 THEN CONCAT('BL ', bloque)  ELSE CONCAT('BL 0', bloque) END AS nvarchar) as nombre_proceso, 
+      '' as Capitulo,[Short_Item],[item],
+      CAST(CASE WHEN Resp = 'SI CUMPLE' THEN PONDERADO ELSE 0 END AS int) as [Total_Si],
+      CAST(CASE WHEN Resp = 'NO CUMPLE' THEN PONDERADO ELSE 0 END AS int) as [Total_No]
+  FROM [Formularios].[dbo].[Vista_Cultivo_Mercedes]
+  WHERE fecha between '${fIn} 00:00:00' and '${fFi} 23:59:59'
+  ORDER BY [fecha],Finca,[Area],[Variedad], [Bloque];`
+};
+
+
+
+
 let exp = (fIn, fFi) => {
   return `
           /* crea la temporal */
@@ -223,6 +241,24 @@ modGrafica.plaData = function (logdata, callback) {
         // Manejo de error en el middleware utils
         callback(null, e.admError(error));
       } else {
+        // Empaquetado de resultados en el middleware utils
+        callback(null, e.paqReturn(rows))
+      }
+    });
+};
+
+modGrafica.monData = function (logdata, callback) {
+  poolConnect;
+  var request = new sql.Request(pool)
+  console.log(mon(logdata[0].formatoSql, logdata[1].formatoSql));
+
+  request.query(mon(logdata[0].formatoSql, logdata[1].formatoSql),
+    function (error, rows) {
+
+      if (error) {
+        // Manejo de error en el middleware utils
+        callback(null, e.admError(error));
+      } else {        
         // Empaquetado de resultados en el middleware utils
         callback(null, e.paqReturn(rows))
       }
