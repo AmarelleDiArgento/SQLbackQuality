@@ -30,7 +30,7 @@ let del = (logdata) => {
           WHERE [id_login] = ${logdata.id_login};`;
 }
 let one = (logdata) => {
-  return `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
+  return `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password], [Grupo1], [Grupo2], [Grupo3]
           FROM [Formularios].[dbo].[login]
           WHERE id_login = ${logdata.id_login};`;
 }
@@ -65,6 +65,12 @@ let logfull = (logdata) => {
 
 let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
           FROM [Formularios].[dbo].[login]`;
+
+let grupos = `
+SELECT distinct [Grupo1] FROM [Formularios].[dbo].[login];
+SELECT distinct [Grupo2] FROM [Formularios].[dbo].[login];
+SELECT distinct [Grupo3] FROM [Formularios].[dbo].[login];
+`
 
 
 
@@ -159,7 +165,7 @@ modLogin.logData = function (logdata, callback) {
 };
 
 modLogin.logallData = function (logdata, callback) {
-  
+
   poolConnect;
   var request = new sql.Request(pool)
   request.query(logfull(logdata),
@@ -191,6 +197,29 @@ modLogin.allData = function (logdata, callback) {
         callback(null, e.paqReturn(rows))
       }
     });
+};
+
+
+
+modLogin.logGru = function (logdata, callback) {
+
+  poolConnect;
+  var request = new sql.Request(pool)
+  request.query(grupos,
+    function (error, rows) {
+      if (error) {
+        // Manejo de error en el middleware Error
+        callback(null, e.admError(error));
+      } else {
+        if (error) {
+          // Manejo de error en el middleware utils
+          callback(null, e.admError(error));
+        } else {
+          // Empaquetado de resultados en el middleware utils
+          callback(null, e.paqReturn(rows))
+        }
+      }
+    })
 };
 
 // pool.close()

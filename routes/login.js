@@ -129,4 +129,21 @@ router.get("/logall", function (req, res, next) {
   });
 });
 
+//get all login
+router.get("/loggru", function (req, res, next) {
+  var logData = {};
+  login.logGru(logData, function (error, data) {
+    if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
+
+
+
 module.exports = router;

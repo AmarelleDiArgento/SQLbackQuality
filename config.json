@@ -1,5 +1,5 @@
 {
-    "dbElite": {
+    "db": {
         "server": "10.50.1.123",
         "options": {
             "instanceName": "Mercedes"
@@ -10,13 +10,8 @@
         "connectionLimit": 200,
         "dateStrings": true,
         "multipleStatements": true
+    },
 
-    },
-    "pool": {
-        "max": 10,
-        "min": 0,
-        "idleTimeoutMillis": 30000
-    },
     "dbPruebas": {
         "server": "10.50.1.120",
         "options": {
@@ -29,9 +24,9 @@
         "connectionLimit": 200,
         "dateStrings": true,
         "multipleStatements": true
-
     },
-    "db": {
+
+    "dbHome ": {
         "server": "localhost",
         "options": {
             "enableArithAbort": true,
@@ -43,7 +38,10 @@
         "connectionLimit": 200,
         "dateStrings": true,
         "multipleStatements": true
-
+    },
+    "pool": {
+        "max": 10,
+        "min": 0,
+        "idleTimeoutMillis": 30000
     }
-
 }
