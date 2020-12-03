@@ -114,6 +114,7 @@ app.post("/graexp", grafica);
 
 
 app.post("/capallfec", capturador);
+app.post("/capdeluni", capturador);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
