@@ -11,6 +11,15 @@
         "dateStrings": true,
         "multipleStatements": true
     },
+    "jup10": {
+        "server": "elt-db10-fca",
+        "user": "eflower",
+        "password": "eflower3000",
+        "database": "FDIM",
+        "connectionLimit": 200,
+        "dateStrings": true,
+        "multipleStatements": true
+    },
 
     "dbPruebas": {
         "server": "10.50.1.120",

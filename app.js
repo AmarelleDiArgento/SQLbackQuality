@@ -14,6 +14,7 @@ var procesos_detalle = require('./routes/Procesos_Detalle');
 var desplegable = require('./routes/desplegable');
 var grafica = require('./routes/grafica');
 var capturador = require('./routes/capturador');
+var reporte = require('./routes/reporte');
 
 
 // At the top of your server.js
@@ -111,6 +112,8 @@ app.post("/grapos", grafica);
 app.post("/gracul", grafica);
 app.post("/grapla", grafica);
 app.post("/graexp", grafica);
+
+app.get("/reptra", reporte);
 
 
 app.post("/capallfec", capturador);
