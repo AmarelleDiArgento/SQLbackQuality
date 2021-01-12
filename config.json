@@ -12,7 +12,7 @@
         "multipleStatements": true
     },
     "jup10": {
-        "server": "elt-db10-fca",
+        "server": "10.50.1.177",
         "user": "eflower",
         "password": "eflower3000",
         "database": "FDIM",
