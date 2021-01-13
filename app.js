@@ -112,6 +112,7 @@ app.post("/grapos", grafica);
 app.post("/gracul", grafica);
 app.post("/grapla", grafica);
 app.post("/graexp", grafica);
+app.post("/gramon", grafica);
 
 app.get("/reptra", reporte);
 
