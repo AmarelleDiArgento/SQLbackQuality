@@ -6,7 +6,7 @@ var reporte = require("../modules/reporte");
 //insert repData proin
 router.get("/reptra", function (req, res, next) {
 
-  var repData = [{formatoSql:"2021-01-07"},{formatoSql:"2021-01-09"}]
+  var repData = [{formatoSql:"2021-01-17"},{formatoSql:"2021-01-19"}]
   // console.log(repData);
 
   reporte.repTrasf(repData, function (error, data) {

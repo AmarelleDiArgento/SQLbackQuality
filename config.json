@@ -17,6 +17,7 @@
         "password": "eflower3000",
         "database": "FDIM",
         "connectionLimit": 200,
+        "requestTimeout": 300000,
         "dateStrings": true,
         "multipleStatements": true
     },
