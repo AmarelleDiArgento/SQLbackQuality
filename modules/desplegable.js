@@ -13,11 +13,20 @@ pool.on('error', err => {
   (error) ? e.admError(err): console.log("...Conectado...");
 })
 
-let ins = (desdata) => {
-  return `
-          INSERT INTO [Formularios].[dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
-          VALUES('${desdata.Filtro}', '${desdata.Codigo}', '${desdata.Opcion}');`
+let ins = (desdata) => 
+{
+  return `BEGIN IF NOT EXISTS
+            (
+              SELECT* FROM [Formularios].[dbo].[Desplegables]
+                WHERE [Filtro]='${desdata.Filtro}'
+                AND [Codigo]='${desdata.Codigo}'
+            ) 
+          BEGIN INSERT INTO [Formularios].[dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
+            VALUES ('${desdata.Filtro}', '${desdata.Codigo}', '${desdata.Opcion}') 
+            END 
+          END`
 };
+
 let upd = (desdata) => {
    
   return `UPDATE [Formularios].[dbo].[Desplegables]
