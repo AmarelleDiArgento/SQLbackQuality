@@ -11,6 +11,16 @@
         "dateStrings": true,
         "multipleStatements": true
     },
+    "jup10": {
+        "server": "10.50.1.177",
+        "user": "eflower",
+        "password": "eflower3000",
+        "database": "FDIM",
+        "connectionLimit": 200,
+        "requestTimeout": 300000,
+        "dateStrings": true,
+        "multipleStatements": true
+    },
 
     "dbPruebas": {
         "server": "10.50.1.120",

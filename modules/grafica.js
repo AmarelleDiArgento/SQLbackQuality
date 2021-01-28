@@ -109,16 +109,20 @@ let pla = (fIn, fFi) => {
 
 let mon = (fIn, fFi) => {
   return `
-  SELECT	[fecha],TRIM([Finca]) as Finca,[Area],
-  trim(REVERSE(PARSENAME(REPLACE(REVERSE([Variedad]), '-', '.'), 1))) AS Supervisor,
-  trim(REVERSE(PARSENAME(REPLACE(REVERSE([Variedad]), '-', '.'), 2))) AS Variedad,
-      CAST(CASE WHEN len([Bloque])>1 THEN CONCAT('BL ', bloque)  ELSE CONCAT('BL 0', bloque) END AS nvarchar) as nombre_proceso, 
-      '' as Capitulo,[Short_Item],[item],
-      CAST(CASE WHEN Resp = 'SI CUMPLE' THEN PONDERADO ELSE 0 END AS int) as [Total_Si],
-      CAST(CASE WHEN Resp = 'NO CUMPLE' THEN PONDERADO ELSE 0 END AS int) as [Total_No]
-  FROM [Formularios].[dbo].[Vista_Cultivo_Mercedes]
+  SELECT [fecha], 
+    TRIM([Finca]) as Finca,[Area],
+    TRIM(dm.Producto) AS Supervisor,
+    TRIM(dm.Variedad) AS Variedad,	
+    CAST(CASE WHEN Formularios.dbo.removerCaracteresNoNumericos(bloque)>9 
+      THEN CONCAT('BL ', Formularios.dbo.removerCaracteresNoNumericos(bloque))  
+      ELSE CONCAT('BL 0', Formularios.dbo.removerCaracteresNoNumericos(bloque)) END AS nvarchar) as nombre_proceso,
+    '' as Capitulo,[Short_Item],[item],
+    CAST(CASE WHEN Resp = 'SI CUMPLE' THEN PONDERADO ELSE 0 END AS int) as [Total_Si],
+    CAST(CASE WHEN Resp = 'NO CUMPLE' THEN PONDERADO ELSE 0 END AS int) as [Total_No]
+  FROM [Formularios].[dbo].[Vista_Cultivo_Mercedes] dm
   WHERE fecha between '${fIn} 00:00:00' and '${fFi} 23:59:59'
-  ORDER BY [fecha],Finca,[Area],[Variedad], [Bloque];`
+  ORDER BY [fecha],Finca,[Area],[Variedad], [Bloque];
+  `
 };
 
 
