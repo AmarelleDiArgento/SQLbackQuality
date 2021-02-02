@@ -4,7 +4,7 @@
 			"path": "."
 		},
 		{
-			"path": "../SQLfrontQuality"
+			"path": "../front"
 		}
 	],
 	"settings": {}
