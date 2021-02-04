@@ -30,7 +30,7 @@ let forms = (cap) => {
     inner join [Formularios].[dbo].[Procesos] p on dpd.id_procesos = p.codigo_proceso
     inner join [Formularios].[dbo].[login] l on dpd.id_usuario = l.id_usuario
   WHERE id_codigo = 1 and fecha between '${c.fIn} 00:00:00' and '${c.fFi} 23:59:59'
-    and dpd.[id_procesos] not int ('110')
+    and dpd.[id_procesos] not int (110)
     ${condicion}
   ORDER BY  CONVERT(varchar,[fecha],12), l.nombre_usuario, p.nombre_proceso, [consec_json], [rUsu_resp_d]`
 
