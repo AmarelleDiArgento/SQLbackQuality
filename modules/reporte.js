@@ -23,27 +23,34 @@ let trans = (fIn, fFi) => {
 	DECLARE @Inicio Date;
 	DECLARE @Fin Date;
 	Set @Inicio = getDate() -1
-	Set @Fin = getDate() + 1 DROP TABLE IF EXISTS #ResultadoTransferencias;
+	Set @Fin = getDate() + 1 
+	DROP TABLE IF EXISTS #ResultadoTransferencias;
 		CREATE TABLE #ResultadoTransferencias 
 		(
-			[IdTransaccion] [varchar](40) NULL,
 			[idOrdenDetalle] [int] NULL,
 			[idOrdenTransferencia] [int] NOT NULL,
 			[idItem] [int] NOT NULL,
 			[PostCosechaOrigen] [varchar](100) NULL,
+			[idPostCosechaOrigen] [int] NULL,
 			[PostCosechaDestino] [varchar](100) NULL,
+			[idPostCosechaDestino] [int] NULL,
 			[nomship] [varchar](60) NULL,
 			[Estado] [varchar](20) NULL,
 			[FechaTransferencia] [datetime] NOT NULL,
 			[ProductoMaestro] [varchar](100) NULL,
-			[IdProducto] [smallint] NOT NULL,
+			[IDProductoMaestro] [int] NULL,
+			[IdProducto] [int] NOT NULL,
 			[Producto] [varchar](50) NULL,
 			[IDVariedad] [int] NOT NULL,
 			[Variedad] [varchar](50) NULL,
 			[Color] [varchar](50) NULL,
+			[idColor] [int] NULL,
 			[TipoCorte] [varchar](50) NULL,
+			[idTipoCorte] [int] NULL,
 			[Marca] [varchar](200) NULL,
+			[idMarca] [int] NULL,
 			[Grado] [varchar](50) NULL,
+			[idGrado] [int] NULL,
 			[TallosPedidos] [int] NOT NULL,
 			[RamosPedido] [int] NOT NULL,
 			[RamosEmpaque] [int] NOT NULL,
@@ -51,7 +58,7 @@ let trans = (fIn, fFi) => {
 			[RamosEnviados] [int] NOT NULL,
 			[RamosEmpaqueEnviados] [int] NOT NULL,
 			[PostCosechaEnvia] [varchar](100) NULL,
-			[SemanaEnvio] [numeric](2, 0) NULL,
+			[SemanaEnvio] [real] NULL,
 			[UsuarioEnvia] [varchar](20) NULL,
 			[TallosRecibidos] [int] NOT NULL,
 			[RamosRecibidos] [int] NOT NULL,
@@ -63,7 +70,7 @@ let trans = (fIn, fFi) => {
 			[TipoOT] [varchar](6) NULL,
 			[TipoEmpaque] [varchar](20) NULL,
 			[Orden] [int] NULL,
-			[Semana] [numeric](2, 0) NULL,
+			[Semana] [real] NULL,
 			[FechaJornada] [smalldatetime] NULL,
 			[FechaLiberacion] [smalldatetime] NULL,
 			[FechaEnvioParcial] [smalldatetime] NULL,
@@ -73,7 +80,12 @@ let trans = (fIn, fFi) => {
 			[ColorAgrupado] [varchar](150) NULL,
 			[GradodeCalidad] [varchar](150) NULL,
 			[UsuarioCrea] [varchar](150) NULL,
-			[UsuarioLibera] [varchar](150) NULL
+			[UsuarioLibera] [varchar](150) NULL,
+			[TallosProcesados] [int] NULL,
+			[RamosProcesados] [int] NOT NULL,
+			[idGradoMaestro] [int] NULL,
+			[idColorAgrupado] [int] NULL,
+			[IdEmpresa] [int] NOT NULL
 		)
 	SET NOCOUNT ON;
 	INSERT INTO #ResultadoTransferencias EXEC [INV].[PA_ReporteOrdenesTransferenciaDetalle] 
@@ -99,8 +111,7 @@ let trans = (fIn, fFi) => {
 				[Producto],
 				[Color]
 			HAVING sum([TallosPendientes]) > 0 FOR JSON AUTO
-		) doc 
-		DROP TABLE IF EXISTS #ResultadoTransferencias;
+		) doc DROP TABLE IF EXISTS #ResultadoTransferencias;
     `
 
 };

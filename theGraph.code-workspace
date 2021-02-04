@@ -4,11 +4,7 @@
 			"path": "."
 		},
 		{
-<<<<<<< HEAD
 			"path": "../front"
-=======
-			"path": "..\\front"
->>>>>>> 676e3fb1acc7f8572d74d9f79e24adf615363f01
 		}
 	],
 	"settings": {}
