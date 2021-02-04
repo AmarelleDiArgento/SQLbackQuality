@@ -27,6 +27,7 @@ let trans = (fIn, fFi) => {
 	DROP TABLE IF EXISTS #ResultadoTransferencias;
 		CREATE TABLE #ResultadoTransferencias 
 		(
+			[IdTransaccion] [varchar](40) NULL,
 			[idOrdenDetalle] [int] NULL,
 			[idOrdenTransferencia] [int] NOT NULL,
 			[idItem] [int] NOT NULL,
