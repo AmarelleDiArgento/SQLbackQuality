@@ -66,7 +66,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.disable("etag");
 app.use("/", index);
 
-//urls user
+// urls user
 app.post("/logins", login);
 app.put("/logupd/:id", login);
 app.delete("/logdel/:id", login);
@@ -76,16 +76,14 @@ app.get("/logall", login);
 app.post("/loginfull", login);
 app.get("/loggru", login);
 
-
-
-//urls procesos
+// urls procesos
 app.post("/proins", proceso);
 app.put("/proupd/:id", proceso);
 app.delete("/prodel/:id", proceso);
 app.post("/proone/:id", proceso);
 app.get("/proall", proceso);
 
-//urls procesos detalle
+// urls procesos detalle
 app.post("/pdins", procesos_detalle);
 app.put("/pdupd/:id", procesos_detalle);
 app.delete("/pddel/:id", procesos_detalle);
@@ -93,8 +91,7 @@ app.post("/pdone/:id", procesos_detalle);
 app.post("/pdfil/:id", procesos_detalle);
 app.get("/pdall", procesos_detalle);
 
-
-//urls desplegables
+// urls desplegables
 app.post("/desins", desplegable);
 app.put("/desupd/:id", desplegable);
 app.delete("/desdel/:id", desplegable);
@@ -102,12 +99,12 @@ app.post("/desone/:id", desplegable);
 app.post("/desfil/:id", desplegable);
 app.get("/desall", desplegable);
 
-
-//urls grafica
+// urls grafica
 // app.post("/proins", proceso);
 // app.put("/proupd/:id", proceso);
 // app.delete("/prodel/:id", proceso);
 // app.post("/proone/:id", proceso);
+
 app.post("/grapos", grafica);
 app.post("/gracul", grafica);
 app.post("/grapla", grafica);
@@ -115,7 +112,6 @@ app.post("/graexp", grafica);
 app.post("/gramon", grafica);
 
 app.get("/reptra", reporte);
-
 
 app.post("/capallfec", capturador);
 app.post("/capdeluni", capturador);

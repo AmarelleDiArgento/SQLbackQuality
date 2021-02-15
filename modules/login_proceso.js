@@ -13,10 +13,21 @@ pool.on('error', err => {
   (error) ? e.admError(err):  console.log("...Conectado...");
 })
 
-let ins = (logprodata) => {
-  return `INSERT INTO [Formularios].[dbo].[login_proceso] ([id_usuario] ,[id_procesos])
-          VALUES(${logprodata.id_usuario},'${logprodata.id_procesos}');`
+let ins = (logprodata) => 
+{
+  return ` BEGIN IF NOT EXISTS
+            (
+              SELECT * FROM [Formularios].[dbo].[login_proceso]
+              WHERE [id_usuario]=${logprodata.id_usuario} 
+              AND [id_procesos]=${logprodata.id_procesos}
+            )
+          BEGIN INSERT INTO [Formularios].[dbo].[login_proceso]([id_usuario] ,[id_procesos])
+            VALUES(${logprodata.id_usuario},'${logprodata.id_procesos}')
+            END 
+          END;`
 };
+
+
 let upd = (logprodata) => {
   return `UPDATE [Formularios].[dbo].[login_proceso]
           SET [id_usuario] = ${logprodata.id_usuario}, [id_procesos] = '${logprodata.id_procesos}' 
