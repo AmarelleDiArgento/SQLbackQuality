@@ -130,31 +130,14 @@ let rowsReturn = (rows) => {
 
 modeloUtils.paqNoReturn = function (accion, rows) {
 
-  // console.log(rows);
-
-  if (rows.rowsAffected != 0) {
-    return {
-      respuesta: 'success',
-      rows: [],
-      output: {
-        code: 0,
-        mensaje: 'Registro ' + accion,
-        detalle: ''
-      },
-      rowsAffected: rows.rowsAffected
-    }
-  } else {
-    return {
-      respuesta: 'warning',
-      rows: [],
-      output: {
-        code: 0,
-        mensaje: 'Sin cambios',
-        detalle: 'No se ha logrado efectuar la modificacion solicitada.'
-      },
-      rowsAffected: rows.rowsAffected
-
-    };
+  return {
+    respuesta: 'success',
+    rows: [],
+    output: {
+      code: 0,
+      mensaje: 'Registro ' + accion,
+      detalle: ''
+    },
   }
 }
 

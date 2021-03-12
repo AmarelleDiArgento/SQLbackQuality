@@ -79,10 +79,10 @@ let forms = (cap) => {
 };
 
 let tmpForms = (form) => {
-    // DELETE FROM [dbo].[datos_procesos_detalle]
+    // 
     return `
   
-  Select * FROM [dbo].[datos_procesos_detalle]
+  DELETE FROM [dbo].[datos_procesos_detalle]
   WHERE id_datos_procesos_detalle in(
     SELECT dpd.id_datos_procesos_detalle as id
     FROM [Formularios].[dbo].[datos_procesos_detalle] dpd
@@ -131,7 +131,7 @@ modCapturador.capDelForm = function (capData, callback) {
                 callback(null, e.admError(error));
             } else {
                 // Empaquetado de resultados en el middleware utils
-                callback(null, e.paqReturn(rows))
+                callback(null, e.paqNoReturn('Eliminar', rows))
             }
         })
 };
