@@ -13,8 +13,6 @@ pool.on("error", (err) => {
 });
 
 let ins = (logdata) => {
-  console.log(logdata);
-
   return `BEGIN IF NOT EXISTS
           (
             SELECT * FROM [Formularios].[dbo].[login]
@@ -66,6 +64,105 @@ let logfull = (logdata) => {
     FOR JSON AUTO
   ) DATA;`;
 };
+// Permisos de usuario 
+let per = (logdata) => {
+  console.log(logdata);
+
+  return `
+
+  drop table if exists #PermisosDelUsuario
+  drop table if exists #TodosLosPermisos
+
+  select id_Permiso, m.nombre_modulo, p.nombre_permiso, p.url 
+  into #TodosLosPermisos 
+  from Permisos p
+  inner join modulos m on p.id_modulo = m.id_modulo
+  where p.estado = 1 and m.estado_modulo = 1
+
+  select	login.id_login						[id_login]
+			,trim(modulos.nombre_modulo)		[Modulo]
+				,permisos.id_Permiso			[id_permiso] 
+				,permisos_login.id_permisoLog	[id_log_permisos]
+				,trim(permisos.nombre_permiso)	[permiso]
+
+  into #PermisosDelUsuario
+  from login login
+  inner join login_permisos permisos_login on login.id_login = permisos_login.id_login
+  inner join Permisos permisos on permisos_login.id_permiso = permisos.id_Permiso
+  inner join modulos modulos on permisos.id_modulo = modulos.id_modulo
+  where login.id_usuario = ${logdata.id_usuario}
+
+  select tp.id_Permiso, tp.nombre_modulo, trim(tp.nombre_permiso) nombre_permiso, trim(tp.url) url, iif(pu.id_login is null,0,1) acceso
+  from #TodosLosPermisos tp
+  left join #PermisosDelUsuario pu on tp.id_Permiso = pu.id_permiso
+
+  drop table if exists #PermisosDelUsuario
+  drop table if exists #TodosLosPermisos
+  
+  `;
+};
+
+// Formularios de usuario
+let form = (logdata) => {
+  console.log(logdata);
+
+  return `
+
+  drop table if exists #FormulariosDelUsuario
+  drop table if exists #TodosLosFormularios
+
+  Select codigo_proceso id_proceso, Personalizado1 tipo, nombre_proceso formulario
+  into #TodosLosFormularios
+  from Procesos p 
+  order by Personalizado1, nombre_proceso
+
+  Select lp.id_usuario, p.codigo_proceso id_proceso, p.Personalizado1 tipo, p.nombre_proceso formulario
+  into #FormulariosDelUsuario
+  from Procesos p 
+  inner join login_proceso lp on p.codigo_proceso = lp.id_procesos
+  inner join login l on lp.id_usuario = l.id_usuario
+  where l.id_usuario = ${logdata.id_usuario}
+
+  select  tf.tipo Tipo, tf.formulario Formulario, iif(fu.id_usuario is null,0,1) Acceso
+  from #TodosLosFormularios tf
+  left join #FormulariosDelUsuario fu on tf.id_proceso = fu.id_proceso
+  order by tf.tipo, tf.formulario
+
+  drop table if exists #FormulariosDelUsuario
+  drop table if exists #TodosLosFormularios
+  `;
+};
+
+// Fincas de usuario
+let fics = (logdata) => {
+  console.log(logdata);
+
+  return `
+
+  drop table if exists #FincasDelUsuario
+  drop table if exists #TodasLasFincas
+    
+  Select cp.idFinca, cp.Finca
+  into #TodasLasFincas
+  from CierrePlanoSiembra cp 
+  group by cp.idFinca, cp.Finca
+
+  SELECT codigo id_usuario, opcion id_finca
+  into #FincasDelUsuario
+  FROM [Formularios].[dbo].[Desplegables]
+  WHERE Filtro like 'loginfinca' AND codigo = ${logdata.id_usuario}
+
+  select tf.idFinca, tf.finca, iif(fu.id_usuario is null,0,1) Acceso
+  from #TodasLasFincas tf
+  left join #FincasDelUsuario fu on tf.idFinca = fu.id_finca
+  order by tf.Finca
+
+  drop table if exists #FincasDelUsuario
+  drop table if exists #TodasLasFincas
+
+  `;
+};
+
 
 let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
           FROM [Formularios].[dbo].[login]`;
@@ -95,6 +192,84 @@ modLogin.insData = function (logdata, callback) {
     }
   );
 };
+
+
+modLogin.perUserData = function (logdata, callback) {
+  console.log('Metodo: ', logdata, per(logdata));
+
+  poolConnect;
+  var request = new sql.Request(pool);
+  request.query(
+    per(logdata),
+
+
+    function (error, rows) {
+      if (error) {
+        // Manejo de error en el middleware Error
+        callback(null, e.admError(error));
+      } else {
+        if (error) {
+          // Manejo de error en el middleware utils
+          callback(null, e.admError(error));
+        } else {
+          // Empaquetado de resultados en el middleware utils
+          callback(null, e.paqReturn(rows));
+        }
+      }
+    });
+};
+
+modLogin.formsUserData = function (logdata, callback) {
+  console.log('Metodo: ', logdata, form(logdata));
+
+  poolConnect;
+  var request = new sql.Request(pool);
+  request.query(
+    form(logdata),
+
+
+    function (error, rows) {
+      if (error) {
+        // Manejo de error en el middleware Error
+        callback(null, e.admError(error));
+      } else {
+        if (error) {
+          // Manejo de error en el middleware utils
+          callback(null, e.admError(error));
+        } else {
+          // Empaquetado de resultados en el middleware utils
+          callback(null, e.paqReturn(rows));
+        }
+      }
+    });
+};
+
+modLogin.ficsUserData = function (logdata, callback) {
+  console.log('Metodo: ', logdata, fics(logdata));
+
+  poolConnect;
+  var request = new sql.Request(pool);
+  request.query(
+    fics(logdata),
+
+
+    function (error, rows) {
+      if (error) {
+        // Manejo de error en el middleware Error
+        callback(null, e.admError(error));
+      } else {
+        if (error) {
+          // Manejo de error en el middleware utils
+          callback(null, e.admError(error));
+        } else {
+          // Empaquetado de resultados en el middleware utils
+          callback(null, e.paqReturn(rows));
+        }
+      }
+    });
+};
+
+
 
 modLogin.updData = function (logdata, callback) {
   poolConnect;

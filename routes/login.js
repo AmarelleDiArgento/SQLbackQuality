@@ -58,6 +58,28 @@ router.post("/login", function (req, res, next) {
 });
 
 
+
+//get login user
+router.post("/loginpermisos", function (req, res, next) {
+  console.log(req.body);
+
+  var logData = {
+    id_usuario: req.body.id_usuario
+  };
+
+  login.perUserData(logData, function (error, data) {
+    if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
+
+
 //get login user
 router.post("/loginfull", function (req, res, next) {
   
@@ -68,6 +90,28 @@ router.post("/loginfull", function (req, res, next) {
   login.logallData(logData, function (error, data) {
     if (error) {
       console.log(error);
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
+
+
+
+//get login user
+router.post("/loginfincas", function (req, res, next) {
+  console.log(req.body);
+
+  var logData = {
+    id_usuario: req.body.id_usuario
+  };
+
+  login.ficsUserData(logData, function (error, data) {
+    if (error) {
 
       res.status(504).jsonp({
         error: error

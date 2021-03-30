@@ -75,6 +75,11 @@ app.post("/logone/:id", login);
 app.get("/logall", login);
 app.post("/loginfull", login);
 app.get("/loggru", login);
+app.post("/loginpermisos", login);
+app.post("/loginformularios", login);
+app.post("/loginfincas", login);
+
+
 
 // urls procesos
 app.post("/proins", proceso);
