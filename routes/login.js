@@ -5,11 +5,11 @@ var login = require("../modules/login");
 
 //insert data login
 router.post("/logins", function (req, res, next) {
+  console.log(req.body);
 
-  var logdata = req.body
-  // console.log(proData);
+  var logData = req.body
 
-  login.insData(logdata, function (error, data) {
+  login.insData(logData, function (error, data) {
     if (error) {
       res.status(504).jsonp({
         error: error
@@ -41,10 +41,8 @@ router.put("/logupd/:id", function (req, res, next) {
 router.post("/login", function (req, res, next) {
   console.log(req.body);
 
-  var logData = {
-    usuario: req.body.usuario,
-    password: req.body.password
-  };
+  var logData = req.body
+  
   login.logData(logData, function (error, data) {
     if (error) {
 
@@ -79,10 +77,29 @@ router.post("/loginpermisos", function (req, res, next) {
   });
 });
 
+//get login user
+router.post("/loginformularios", function (req, res, next) {
+  console.log(req.body);
+
+  var logData = {
+    id_usuario: req.body.id_usuario
+  };
+
+  login.formsUserData(logData, function (error, data) {
+    if (error) {
+
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
 
 //get login user
 router.post("/loginfull", function (req, res, next) {
-  
+
   var logData = {
     usuario: req.body.usuario,
     password: req.body.password
@@ -99,8 +116,6 @@ router.post("/loginfull", function (req, res, next) {
     }
   });
 });
-
-
 
 //get login user
 router.post("/loginfincas", function (req, res, next) {

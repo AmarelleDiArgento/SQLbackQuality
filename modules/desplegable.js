@@ -13,13 +13,13 @@ pool.on('error', err => {
   (error) ? e.admError(err): console.log("...Conectado...");
 })
 
-let ins = (desdata) => 
-{
+let ins = (desdata) => {
   return `BEGIN IF NOT EXISTS
             (
               SELECT* FROM [Formularios].[dbo].[Desplegables]
                 WHERE [Filtro]='${desdata.Filtro}'
                 AND [Codigo]='${desdata.Codigo}'
+                AND [Opcion]='${desdata.Codigo}'
             ) 
           BEGIN INSERT INTO [Formularios].[dbo].[Desplegables]([Filtro], [Codigo], [Opcion])
             VALUES ('${desdata.Filtro}', '${desdata.Codigo}', '${desdata.Opcion}') 
@@ -28,7 +28,7 @@ let ins = (desdata) =>
 };
 
 let upd = (desdata) => {
-   
+
   return `UPDATE [Formularios].[dbo].[Desplegables]
           SET [Filtro] = '${desdata.Filtro}', [Codigo] = '${desdata.Codigo}', [Opcion] = '${desdata.Opcion}'
           WHERE [id_Desplegable] = ${desdata.id_Desplegable};`;
@@ -52,6 +52,7 @@ let all = `SELECT [id_Desplegable] ,[Filtro] ,[Codigo] ,[Opcion]
           FROM [Formularios].[dbo].[Desplegables]`;
 
 modDesplegable.insData = function (desdata, callback) {
+  console.log(ins(desdata));
 
   poolConnect;
   var request = new sql.Request(pool)
@@ -85,6 +86,7 @@ modDesplegable.updData = function (desdata, callback) {
 };
 
 modDesplegable.delData = function (desdata, callback) {
+  console.log(del(desdata));
 
   poolConnect;
   var request = new sql.Request(pool)

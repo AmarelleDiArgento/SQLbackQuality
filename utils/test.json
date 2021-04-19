@@ -1,0 +1,37 @@
+[
+    {
+        "f_inicial": "2021-02-01",
+        "f_final": "2021-02-01"
+    }
+]
+
+[
+    {
+        "fecha": "2021-02-01",
+        "fincas": [
+            {
+                "finca": "SAN CARLOS",
+                "bloques": {
+                    "bloque": "BL 01",
+                    "camas_monitoreadas": 100,
+                    "plagas": [
+                        {
+                            "plagas": "Agrobacterium",
+                            "total_camas_afectadas": 2,
+                            "camas_afectadas": [
+                                {
+                                    "cama": 1,
+                                    "severidad": "alta"
+                                },
+                                {
+                                    "cama": 2,
+                                    "severidad": "media"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]

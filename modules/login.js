@@ -16,10 +16,11 @@ let ins = (logdata) => {
   return `BEGIN IF NOT EXISTS
           (
             SELECT * FROM [Formularios].[dbo].[login]
-            WHERE [id_usuario]=${logprodata.id_usuario} 
+            WHERE [id_usuario]=${logdata.id_usuario} 
           )
-        BEGIN INSERT INTO [Formularios].[dbo].[login]([id_usuario] ,[nombre_usuario] ,[password])
-          VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.id_usuario}')
+        BEGIN INSERT INTO [Formularios].[dbo].[login]
+        ([id_usuario],[nombre_usuario],[password],[Grupo1],[Grupo2],[Grupo3])
+          VALUES(${logdata.id_usuario},'${logdata.nombre_usuario}','${logdata.id_usuario}','${logdata.Grupo1}','${logdata.Grupo2}','${logdata.Grupo3}' )
           END 
         END;`;
 };
@@ -107,23 +108,22 @@ let form = (logdata) => {
   console.log(logdata);
 
   return `
-
   drop table if exists #FormulariosDelUsuario
   drop table if exists #TodosLosFormularios
 
   Select codigo_proceso id_proceso, Personalizado1 tipo, nombre_proceso formulario
   into #TodosLosFormularios
-  from Procesos p 
+  from Procesos p
   order by Personalizado1, nombre_proceso
 
-  Select lp.id_usuario, p.codigo_proceso id_proceso, p.Personalizado1 tipo, p.nombre_proceso formulario
+  Select lp.id_login_proc, p.codigo_proceso id_proceso, p.Personalizado1 tipo, p.nombre_proceso formulario
   into #FormulariosDelUsuario
-  from Procesos p 
+  from Procesos p
   inner join login_proceso lp on p.codigo_proceso = lp.id_procesos
   inner join login l on lp.id_usuario = l.id_usuario
   where l.id_usuario = ${logdata.id_usuario}
 
-  select  tf.tipo Tipo, tf.formulario Formulario, iif(fu.id_usuario is null,0,1) Acceso
+  select   tf.id_proceso, tf.tipo Tipo, tf.formulario Formulario, iif(fu.id_login_proc is null,0,fu.id_login_proc) Acceso
   from #TodosLosFormularios tf
   left join #FormulariosDelUsuario fu on tf.id_proceso = fu.id_proceso
   order by tf.tipo, tf.formulario
@@ -147,12 +147,12 @@ let fics = (logdata) => {
   from CierrePlanoSiembra cp 
   group by cp.idFinca, cp.Finca
 
-  SELECT codigo id_usuario, opcion id_finca
+  SELECT  id_Desplegable, codigo id_usuario, opcion id_finca
   into #FincasDelUsuario
   FROM [Formularios].[dbo].[Desplegables]
   WHERE Filtro like 'loginfinca' AND codigo = ${logdata.id_usuario}
 
-  select tf.idFinca, tf.finca, iif(fu.id_usuario is null,0,1) Acceso
+  select tf.idFinca, tf.finca, iif(fu.id_usuario is null,0, id_Desplegable ) Acceso
   from #TodasLasFincas tf
   left join #FincasDelUsuario fu on tf.idFinca = fu.id_finca
   order by tf.Finca
@@ -164,7 +164,7 @@ let fics = (logdata) => {
 };
 
 
-let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password]
+let all = `SELECT [id_login] ,[id_usuario] ,[nombre_usuario] ,[password], [Grupo1], [Grupo2], [Grupo3]
           FROM [Formularios].[dbo].[login]`;
 
 let grupos = `
@@ -192,7 +192,6 @@ modLogin.insData = function (logdata, callback) {
     }
   );
 };
-
 
 modLogin.perUserData = function (logdata, callback) {
   console.log('Metodo: ', logdata, per(logdata));
@@ -268,8 +267,6 @@ modLogin.ficsUserData = function (logdata, callback) {
       }
     });
 };
-
-
 
 modLogin.updData = function (logdata, callback) {
   poolConnect;
