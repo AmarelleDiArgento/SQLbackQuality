@@ -10,7 +10,7 @@ const pool = new sql.ConnectionPool(config.jup10);
 const poolConnect = pool.connect();
 
 pool.on('error', err => {
-	(error) ? e.admError(err): console.log("...Conectado...");
+	(error) ? e.admError(err) : console.log("...Conectado...");
 })
 
 
@@ -118,6 +118,72 @@ let trans = (fIn, fFi) => {
 };
 
 
+let inv = (bodega) => {
+	return `
+	--	'${bodega}',
+	DROP TABLE IF EXISTS #t;
+
+	CREATE TABLE #t(
+			idPostcosecha int	,
+			Postcosecha varchar(max)	,
+			idBodega int	,
+			Bodega varchar(max)	,
+			FechaPrimerIngreso date	,
+			HoraIngresoBodega time,
+			YearSemana int	,
+			Semana int	,
+			Serial varchar(max)	,
+			idProducto int	,
+			Producto varchar(max)	,
+			idVariedad int	,
+			Variedad varchar(max)	,
+			idColorAgrupado int	,
+			ColorAgrupado varchar(max)	,
+			idColor int	,
+			Color varchar(max)	,
+			idGrado int	,
+			Grado varchar(max)	,
+			IdGradoMaestro int	,
+			GradoMaestro varchar(max)	,
+			idTipoCorte int	,
+			TipoCorte varchar(max)	,
+			TallosporRamo int	,
+			RamosSaldo int	,
+			TallosSaldo int	,
+			TotalTallos int	,
+			TallosClasificados int	,
+			ProductoMaestro varchar(max)	,
+			TipoEmpaque varchar(max)	,
+			Marca varchar(max)	,
+			Finca varchar(max)	,
+			Ubicacion varchar(max)	,
+			Pedido varchar(max)	,
+			Item int	,
+			idReceta int	,
+			Cliente varchar(max)	,
+			indModificado varchar(max)	,
+			BodegaDestino int	,
+			PostcosechaEtiqueta varchar(max)	,
+			FechaIngresoTunel datetime	,
+			idTipoMovimiento_Ult varchar(max)
+	); 
+			-- 342								
+			INSERT INTO #t exec [FDIM].[INV].[PA_ReporteInventario] '${bodega}','2','0','0','0','-999','-999',null ;
+											
+											
+			SELECT (                
+				select FechaPrimerIngreso Ingreso, Producto,Variedad, Color, Grado, Ubicacion, count(distinct Serial) Seriales, sum(TotalTallos) Tallos
+				from #t 
+				group by FechaPrimerIngreso, Producto,Variedad, Color, Grado, Ubicacion
+				order by FechaPrimerIngreso, Producto,Variedad, Color, Grado, Ubicacion
+			FOR JSON AUTO
+			) doc DROP TABLE IF EXISTS #t;
+											
+	
+	`
+
+};
+
 
 modReporte.repTrasf = function (repData, callback) {
 	poolConnect;
@@ -136,7 +202,34 @@ modReporte.repTrasf = function (repData, callback) {
 				rows = rows.recordset
 				//console.log(rows[0].doc);
 				data = {
-					data:  JSON.parse(rows[0].doc)
+					data: JSON.parse(rows[0].doc)
+				}
+				callback(null, data)
+
+			}
+		});
+};
+
+
+
+modReporte.repInvt = function (repData, callback) {
+	poolConnect;
+	var request = new sql.Request(pool)
+	console.log(inv(repData.bodega));
+
+	request.query(inv(repData.bodega),
+		function (error, rows) {
+
+			if (error) {
+				// Manejo de error en el middleware utils
+				callback(null, e.admError(error));
+			} else {
+				// Empaquetado de resultados en el middleware utils
+				//callback(null, e.paqReturn(rows))
+				rows = rows.recordset
+				//console.log(rows[0].doc);
+				data = {
+					data: JSON.parse(rows[0].doc)
 				}
 				callback(null, data)
 

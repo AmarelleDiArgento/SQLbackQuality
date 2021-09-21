@@ -20,5 +20,21 @@ router.get("/reptra", function (req, res, next) {
   });
 });
 
+//insert repData proin
+router.post("/repinv", function (req, res, next) {
+
+  var repData = req.body
+  console.log(repData);
+
+  reporte.repInvt(repData, function (error, data) {
+    if (error) {
+      res.status(504).jsonp({
+        error: error
+      });
+    } else {
+      res.status(200).jsonp(data);
+    }
+  });
+});
 
 module.exports = router;

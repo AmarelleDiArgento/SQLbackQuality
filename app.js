@@ -118,6 +118,7 @@ app.post("/graexp", grafica);
 app.post("/gramon", grafica);
 
 app.get("/reptra", reporte);
+app.post("/repinv", reporte);
 
 app.post("/capallfec", capturador);
 app.post("/capdeluni", capturador);
