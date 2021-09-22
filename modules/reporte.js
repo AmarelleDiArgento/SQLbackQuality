@@ -118,8 +118,9 @@ let trans = (fIn, fFi) => {
 };
 
 
-let inv = (bodega) => {
+let inv = (finca, bodega) => {
 	return `
+	--	'${finca}',
 	--	'${bodega}',
 	DROP TABLE IF EXISTS #t;
 
@@ -168,7 +169,7 @@ let inv = (bodega) => {
 			idTipoMovimiento_Ult varchar(max)
 	); 
 			-- 342								
-			INSERT INTO #t exec [FDIM].[INV].[PA_ReporteInventario] '${bodega}','2','0','0','0','-999','-999',null ;
+			INSERT INTO #t exec [FDIM].[INV].[PA_ReporteInventario] '${finca}','${bodega}','0','0','0','-999','-999',null ;
 											
 											
 			SELECT (                
@@ -215,9 +216,9 @@ modReporte.repTrasf = function (repData, callback) {
 modReporte.repInvt = function (repData, callback) {
 	poolConnect;
 	var request = new sql.Request(pool)
-	console.log(inv(repData.bodega));
+	console.log(inv(repData.finca, repData.bodega));
 
-	request.query(inv(repData.bodega),
+	request.query(inv(repData.finca, repData.bodega),
 		function (error, rows) {
 
 			if (error) {
